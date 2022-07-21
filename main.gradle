@@ -1,0 +1,121 @@
+allprojects {
+    repositories {
+        mavenCentral()
+    }
+}
+
+subprojects {
+    apply plugin: 'java'
+    apply plugin: 'jacoco'
+    apply plugin: 'io.spring.dependency-management'
+
+    configurations.all {
+        resolutionStrategy.eachDependency {
+            DependencyResolveDetails details ->
+                if (details.requested.group == "org.springframework") {
+                    details.useVersion "${springFrameWorkVersion}"
+                }
+                if (details.requested.group == "org.springframework.boot") {
+                    details.useVersion "${springBootVersion}"
+                }
+                if (details.requested.group == "io.netty") {
+                    details.useVersion "${nettyVersion}"
+                }
+        }
+    }
+
+    sourceCompatibility = JavaVersion.VERSION_17
+    targetCompatibility = JavaVersion.VERSION_17
+
+    dependencies {
+        implementation 'io.projectreactor:reactor-core'
+        implementation 'io.projectreactor.addons:reactor-extra'
+
+        testImplementation 'io.projectreactor:reactor-test'
+        testImplementation 'org.springframework.boot:spring-boot-starter-test'
+        implementation platform("org.springframework.boot:spring-boot-dependencies:${springBootVersion}")
+
+        compileOnly "org.projectlombok:lombok:${lombokVersion}"
+        annotationProcessor "org.projectlombok:lombok:${lombokVersion}"
+        testCompileOnly "org.projectlombok:lombok:${lombokVersion}"
+        testAnnotationProcessor "org.projectlombok:lombok:${lombokVersion}"
+    }
+
+    jacoco {
+        toolVersion = "0.8.8"
+    }
+
+    test {
+        useJUnitPlatform()
+    }
+
+    jacocoTestReport {
+        dependsOn test
+        reports {
+            xml.enabled true
+            xml.destination file("${buildDir}/reports/jacoco.xml")
+            csv.enabled false
+            html.destination file("${buildDir}/reports/jacocoHtml")
+        }
+    }
+
+    tasks.withType(JavaCompile) {
+        options.encoding = 'UTF-8'
+    }
+}
+
+task jacocoMergedReport(type: JacocoReport) {
+    dependsOn subprojects.test
+    finalizedBy jacocoTestCoverageVerification
+    additionalSourceDirs.setFrom files(subprojects.sourceSets.main.allSource.srcDirs)
+    sourceDirectories.setFrom files(subprojects.sourceSets.main.allSource.srcDirs)
+    classDirectories.setFrom(files(subprojects.sourceSets.main.output).collect {
+        fileTree(dir: it,
+                exclude: [
+                        "**/app/**",
+                        "**/persistence/**",
+                        "**/restrictivelisttransunion/**"
+                ]
+        )
+    })
+    executionData.setFrom project.fileTree(dir: '.', include: '**/build/jacoco/test.exec')
+    reports {
+        xml.enabled true
+        csv.enabled false
+        html.enabled true
+    }
+}
+
+jacocoTestCoverageVerification {
+    dependsOn jacocoMergedReport
+    additionalSourceDirs.setFrom files(subprojects.sourceSets.main.allSource.srcDirs)
+    sourceDirectories.setFrom files(subprojects.sourceSets.main.allSource.srcDirs)
+    classDirectories.setFrom files(subprojects.sourceSets.main.output)
+    executionData.setFrom project.fileTree(dir: '.', include: '**/build/jacoco/test.exec')
+    afterEvaluate {
+        classDirectories.setFrom(files(classDirectories.files.collect {
+            fileTree(dir: it, exclude: [
+                    "**/app/**",
+                    "**/persistence/**",
+                    "**/restrictivelisttransunion/**"
+            ])
+        }))
+    }
+    violationRules {
+        rule {
+            limit {
+                minimum = 0.85
+            }
+        }
+    }
+}
+
+tasks.named('wrapper') {
+    gradleVersion = '7.4.2'
+}
+
+bootJar {
+    manifest {
+        attributes 'Start-Class': 'co.com.kiire.app.MainApplication'
+    }
+}

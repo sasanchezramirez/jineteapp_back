@@ -1,0 +1,23 @@
+apply plugin: 'org.springframework.boot'
+
+dependencies {
+    implementation 'org.springframework.boot:spring-boot-starter'
+    implementation project(':gateway')
+    implementation project(':usecase')
+    implementation project(':restrictive-list-transunion')
+    implementation project(':persistence')
+    implementation project(':api-rest')
+}
+
+task explodedJar(type: Copy) {
+    with jar
+    into "${buildDir}/exploded"
+}
+
+bootJar {
+    enabled = true
+}
+
+jar {
+    enabled = true
+}

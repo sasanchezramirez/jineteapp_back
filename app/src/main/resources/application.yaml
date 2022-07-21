@@ -1,0 +1,21 @@
+spring:
+  application:
+    name: archetype-back-api
+  webflux:
+    base-path: /archetype
+
+  r2dbc:
+    url: r2dbc:postgresql://localhost:5432/kiire
+    username: postgres
+    password: K11r3
+  data:
+    r2dbc:
+      repositories:
+        enabled: true
+
+logging:
+  level:
+    co.com.kiire: DEBUG
+
+server:
+  port: 8080

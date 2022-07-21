@@ -1,0 +1,24 @@
+rootProject.name = 'kiire-archetype-back-api'
+
+//app Service
+include ':app-service'
+project(':app-service').projectDir=file('./app')
+
+//domain: is a business logic
+include ':model','usecase','gateway'
+project(':model').projectDir=file('./domain/model')
+project(':usecase').projectDir=file('./domain/usecase')
+project(':gateway').projectDir=file('./domain/gateway')
+
+//driven adapters: gateways implementation in folder ./infrastructure/driven-adapter/{name adapter}
+include 'persistence', 'restrictive-list-transunion'
+project(':persistence').projectDir=file('./infrastructure/driven-adapter/persistence')
+project(':restrictive-list-transunion').projectDir=file('./infrastructure/driven-adapter/restrictivelisttransunion')
+
+//entry points: entry points to app in folder ./infrastructure/entry-point/{name entry point}
+include ':api-rest'
+project(':api-rest').projectDir=file('./infrastructure/entry-point/api-rest')
+
+//integration test
+include ':test-integration'
+project(':test-integration').projectDir=file('./testintegracion')
