@@ -6,7 +6,7 @@ import co.com.kiire.apirest.dto.UserDTO;
 import co.com.kiire.apirest.util.HandlerErrorController;
 import co.com.kiire.apirest.util.mapper.UserMapper;
 import co.com.kiire.model.config.ResponseCode;
-import co.com.kiire.usecase.UserUseCase;
+import co.com.kiire.usecase.SaveUserUseCase;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -28,7 +28,7 @@ import reactor.util.Loggers;
 public class UserController {
 
     private static final Logger log = Loggers.getLogger(UserController.class.getName());
-    private final UserUseCase userUseCase;
+    private final SaveUserUseCase userUseCase;
 
     @PostMapping(value = "/user", consumes = MediaType.APPLICATION_JSON_VALUE)
     @Operation(summary = "Agregar usuario", description = "Permite recibir una petición de agregar un usuario. Este evalua los campos obligatorios, existencia y formatos para antes de crear el elemento en el sistema")

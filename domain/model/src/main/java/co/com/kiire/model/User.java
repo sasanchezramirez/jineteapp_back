@@ -4,6 +4,9 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 
+/**
+ * Clase que representa al usuario en el dominio
+ */
 @Getter
 @Setter
 @ToString

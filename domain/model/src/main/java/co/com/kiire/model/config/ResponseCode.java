@@ -1,5 +1,8 @@
 package co.com.kiire.model.config;
 
+/**
+ * Enumeracion con el mapeo de los codigos de respuesta
+ */
 public enum ResponseCode {
     KAUS000(500 , "Ocurrió un error inesperado, por favor intenta mas tarde."),
     KAUS001(200 , "Operación exitosa."),
