@@ -5,8 +5,6 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 
-import javax.validation.Valid;
-
 @Getter
 @Setter
 @ToString
@@ -14,11 +12,11 @@ import javax.validation.Valid;
 public class SaveUserDto {
 
     @Schema(description = "Id del usuario", required = true)
-    private @Valid String name;
+    private String name;
 
     @Schema(description = "Código del usuario", required = true)
-    private @Valid String code;
+    private String code;
 
     @Schema(description = "Contraseña del usuario", required = true)
-    private @Valid String password;
+    private String password;
 }
