@@ -49,6 +49,6 @@ public class UserController {
                 .map(userDto -> {
                     log.debug("Finish saveUser with userDto: {}", userDto);
                     return new GenericResponseDTO<>(ResponseCode.KAUS001, userDto);
-                }));
+                }), "saveUser");
     }
 }
