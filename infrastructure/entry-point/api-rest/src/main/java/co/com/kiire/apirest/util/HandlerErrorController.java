@@ -25,7 +25,7 @@ public class HandlerErrorController<T> {
         return genericResponseDROMono.onErrorResume(exception -> {
                     log.debug("Error in {}: {} with error: {}", method, exception.getClass().getSimpleName(), exception.getMessage());
                     String messageException;
-                    ResponseCode responseCode = this.stringResponseCodeMap.get(exception.getClass().getSimpleName());
+                    ResponseCode responseCode = this.stringResponseCodeMap.getOrDefault(exception.getClass().getSimpleName(), ResponseCode.KAUS000);
                     if (responseCode.name().equalsIgnoreCase("KAUS000")) {
                         messageException = responseCode.getHtmlMessage();
                     } else {
