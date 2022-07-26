@@ -4,7 +4,7 @@ import co.com.kiire.apirest.dto.GenericResponseDTO;
 import co.com.kiire.apirest.dto.SaveUserDto;
 import co.com.kiire.apirest.dto.UserDTO;
 import co.com.kiire.apirest.util.HandlerErrorController;
-import co.com.kiire.apirest.util.mapper.UserMapper;
+import co.com.kiire.apirest.util.mapper.UserApiRestMapper;
 import co.com.kiire.model.config.ResponseCode;
 import co.com.kiire.usecase.SaveUserUseCase;
 import io.swagger.v3.oas.annotations.Operation;
@@ -29,6 +29,7 @@ public class UserController {
 
     private static final Logger log = Loggers.getLogger(UserController.class.getName());
     private final SaveUserUseCase userUseCase;
+    private final UserApiRestMapper userApiRestMapper;
 
     @PostMapping(value = "/user", consumes = MediaType.APPLICATION_JSON_VALUE)
     @Operation(summary = "Agregar usuario", description = "Permite recibir una petición de agregar un usuario. Este evalua los campos obligatorios, existencia y formatos para antes de crear el elemento en el sistema")
@@ -42,10 +43,10 @@ public class UserController {
         return handlerErrorController.addErrors(Mono.just(saveUserDto)
                 .map(saveUsr -> {
                     log.debug("Init saveUser with saveUserDto: {}", saveUsr);
-                    return UserMapper.saveUserDtoToUser(saveUsr);
+                    return this.userApiRestMapper.saveUserDtoToUser(saveUsr);
                 })
                 .flatMap(this.userUseCase::saveUserCase)
-                .map(UserMapper::userToUserDto)
+                .map(this.userApiRestMapper::userToUserDto)
                 .map(userDto -> {
                     log.debug("Finish saveUser with userDto: {}", userDto);
                     return new GenericResponseDTO<>(ResponseCode.KAUS001, userDto);

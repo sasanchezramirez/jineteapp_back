@@ -5,4 +5,16 @@ dependencies {
     runtimeOnly 'org.postgresql:postgresql'
     implementation project(':model')
     implementation project(':gateway')
+    compileOnly 'org.mapstruct:mapstruct:1.5.1.Final'
+    annotationProcessor 'org.mapstruct:mapstruct-processor:1.5.1.Final'
+}
+
+repositories {
+    mavenCentral()
+}
+
+compileJava {
+    options.compilerArgs = [
+            '-Amapstruct.defaultComponentModel=spring'
+    ]
 }
