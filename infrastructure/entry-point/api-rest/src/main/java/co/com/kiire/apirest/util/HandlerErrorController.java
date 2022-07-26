@@ -21,11 +21,11 @@ public class HandlerErrorController<T> {
 
     private static final Logger log = Loggers.getLogger(HandlerErrorController.class.getName());
 
-    public Mono<GenericResponseDTO<T>> addErrors(Mono<GenericResponseDTO<T>> genericResponseDROMono) {
+    public Mono<GenericResponseDTO<T>> addErrors(Mono<GenericResponseDTO<T>> genericResponseDROMono, String method) {
         return genericResponseDROMono.onErrorResume(exception -> {
-                    log.debug("Error in saveUser: {} with {}", exception.getClass().getSimpleName(), exception.getMessage());
+                    log.debug("Error in {}: {} with error: {}", method, exception.getClass().getSimpleName(), exception.getMessage());
                     String messageException;
-                    ResponseCode responseCode = ResponseCodeException.getResponseCode(exception.getClass().getSimpleName());
+                    ResponseCode responseCode = this.stringResponseCodeMap.get(exception.getClass().getSimpleName());
                     if (responseCode.name().equalsIgnoreCase("KAUS000")) {
                         messageException = responseCode.getHtmlMessage();
                     } else {
