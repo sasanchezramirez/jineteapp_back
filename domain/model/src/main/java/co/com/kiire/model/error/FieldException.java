@@ -1,4 +1,4 @@
-package co.com.kiire.usecase.error;
+package co.com.kiire.model.error;
 
 import java.io.Serial;
 
