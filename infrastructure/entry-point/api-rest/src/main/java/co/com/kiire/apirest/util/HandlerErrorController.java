@@ -2,7 +2,7 @@ package co.com.kiire.apirest.util;
 
 import co.com.kiire.apirest.dto.GenericResponseDTO;
 import co.com.kiire.model.config.ResponseCode;
-import co.com.kiire.usecase.error.FieldException;
+import co.com.kiire.model.error.FieldException;
 import co.com.kiire.usecase.error.FoundRestrictiveListException;
 import reactor.core.publisher.Mono;
 import reactor.util.Logger;

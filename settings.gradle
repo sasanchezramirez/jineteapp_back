@@ -21,4 +21,4 @@ project(':api-rest').projectDir=file('./infrastructure/entry-point/api-rest')
 
 //integration test
 include ':test-integration'
-project(':test-integration').projectDir=file('./testintegracion')
+project(':test-integration').projectDir=file('./testintegration')
