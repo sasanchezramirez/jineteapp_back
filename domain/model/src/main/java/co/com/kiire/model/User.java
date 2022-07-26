@@ -12,7 +12,7 @@ import lombok.ToString;
 @Setter
 @ToString
 public class User {
-    private Long id;
+    private Integer id;
     private String name;
     private String code;
     private String password;

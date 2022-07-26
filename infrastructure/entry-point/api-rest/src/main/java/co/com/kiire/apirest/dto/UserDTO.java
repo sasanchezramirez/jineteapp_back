@@ -12,7 +12,7 @@ import lombok.ToString;
 public class UserDTO {
 
     @Schema(description = "Id del usuario")
-    private Long id;
+    private Integer id;
 
     @Schema(description = "Código del usuario")
     private String name;

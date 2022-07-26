@@ -11,7 +11,7 @@ import lombok.ToString;
 @Schema(description = "Modelo de entrada para crear un usuario")
 public class SaveUserDto {
 
-    @Schema(description = "Id del usuario", required = true)
+    @Schema(description = "Nombre del usuario", required = true)
     private String name;
 
     @Schema(description = "Código del usuario", required = true)
