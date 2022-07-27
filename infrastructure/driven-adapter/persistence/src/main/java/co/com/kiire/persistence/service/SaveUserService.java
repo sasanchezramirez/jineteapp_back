@@ -20,8 +20,8 @@ public class SaveUserService implements SaveUserGateway {
     @Override
     public Mono<User> saveUser(User user) {
         return Mono.just(user)
-                .map(this.userPersistenceMapper::userToUserDto)
+                .map(this.userPersistenceMapper::userToUserEntity)
                 .flatMap(this.userRepository::save)
-                .map(this.userPersistenceMapper::userDtoToUser);
+                .map(this.userPersistenceMapper::userEntityToUser);
     }
 }

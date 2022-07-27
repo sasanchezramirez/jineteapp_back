@@ -7,7 +7,7 @@ import org.mapstruct.Mapper;
 @Mapper
 public interface UserPersistenceMapper {
 
-    UserEntity userToUserDto(User user);
+    UserEntity userToUserEntity(User user);
 
-    User userDtoToUser(UserEntity userEntity);
+    User userEntityToUser(UserEntity userEntity);
 }
