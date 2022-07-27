@@ -17,22 +17,16 @@ public class SaveUserUseCase {
     private final RestrictiveListGateway restrictiveListGateway;
 
     /**
-     * @param user
-     *              Usuario
-     * @return
-     *              Mono del usuario guardado
-     * @throws FoundRestrictiveListException
-     *              Exception lanzada si el usuario se encuentra en lista restrictiva
+     * @param user Usuario
+     * @return Mono del usuario guardado
+     * @throws FoundRestrictiveListException Exception lanzada si el usuario se encuentra en lista restrictiva
      */
     public Mono<User> saveUserCase(User user) throws FoundRestrictiveListException {
         return Mono.just(user)
                 .flatMap(usr -> {
                     user.validateUser();
-                    if (!this.restrictiveListGateway.validateList(usr.getCode())) {
-                        return Mono.error(new FoundRestrictiveListException("Usuario se encuentra en lista restrictiva"));
-                    } else {
-                        return this.saveUserGateway.saveUser(usr);
-                    }
-                });
+                    return this.restrictiveListGateway.validateList(usr);
+                })
+                .flatMap(this.saveUserGateway::saveUser);
     }
 }

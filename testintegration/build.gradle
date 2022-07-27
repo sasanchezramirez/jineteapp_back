@@ -3,6 +3,7 @@ dependencies {
     implementation project(':gateway')
     implementation project(':api-rest')
     implementation project(':model')
+    implementation project(':usecase')
     implementation 'org.springframework.boot:spring-boot-starter-webflux'
     implementation 'org.springframework.boot:spring-boot-starter-data-r2dbc'
     runtimeOnly 'com.h2database:h2'

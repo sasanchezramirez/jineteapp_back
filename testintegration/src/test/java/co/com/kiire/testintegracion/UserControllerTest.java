@@ -5,9 +5,11 @@ import co.com.kiire.app.MainApplication;
 import co.com.kiire.gateway.contract.RestrictiveListGateway;
 import co.com.kiire.model.User;
 import co.com.kiire.model.config.ResponseCode;
+import co.com.kiire.usecase.error.FoundRestrictiveListException;
 import io.r2dbc.spi.ConnectionFactory;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
+import org.mockito.ArgumentMatchers;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -17,6 +19,7 @@ import org.springframework.http.MediaType;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.reactive.server.WebTestClient;
 import org.springframework.web.reactive.function.BodyInserters;
+import reactor.core.publisher.Mono;
 
 @ActiveProfiles("test")
 @SpringBootTest(classes = MainApplication.class, webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
@@ -40,7 +43,7 @@ class UserControllerTest {
     @Test
     void saveUserTestWithSaveUserSuccess() {
         User user = new User();
-        user.setId(1L);
+        user.setId(1);
         user.setName("nombreTest");
         user.setCode("007");
         user.setPassword("1234");
@@ -49,8 +52,8 @@ class UserControllerTest {
         saveUserDto.setCode(user.getCode());
         saveUserDto.setPassword(user.getPassword());
 
-        Mockito.when(this.restrictiveListGateway.validateList(saveUserDto.getCode()))
-                .thenReturn(true);
+        Mockito.when(this.restrictiveListGateway.validateList(ArgumentMatchers.argThat(usr -> usr.getCode().equalsIgnoreCase(saveUserDto.getCode()))))
+                .thenReturn(Mono.just(user));
 
         WebTestClient.ResponseSpec responseSpec = this.webTestClient.post()
                 .uri("/api/v1/user")
@@ -76,8 +79,8 @@ class UserControllerTest {
         saveUserDto.setCode("008");
         saveUserDto.setPassword("1234");
 
-        Mockito.when(this.restrictiveListGateway.validateList(saveUserDto.getCode()))
-                .thenReturn(false);
+        Mockito.when(this.restrictiveListGateway.validateList(ArgumentMatchers.argThat(usr -> usr.getCode().equalsIgnoreCase(saveUserDto.getCode()))))
+                .thenReturn(Mono.error(new FoundRestrictiveListException("Usuario se encuentra en lista restrictiva")));
 
         WebTestClient.ResponseSpec responseSpec = this.webTestClient.post()
                 .uri("/api/v1/user")
