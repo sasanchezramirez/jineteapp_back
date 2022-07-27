@@ -1,4 +1,4 @@
-rootProject.name = 'kiire-archetype-back-api'
+rootProject.name = 'kiire-back-archetype'
 
 //app Service
 include ':app-service'
