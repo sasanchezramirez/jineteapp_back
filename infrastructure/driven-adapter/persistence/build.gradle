@@ -9,10 +9,6 @@ dependencies {
     annotationProcessor 'org.mapstruct:mapstruct-processor:1.5.1.Final'
 }
 
-repositories {
-    mavenCentral()
-}
-
 compileJava {
     options.compilerArgs = [
             '-Amapstruct.defaultComponentModel=spring'
