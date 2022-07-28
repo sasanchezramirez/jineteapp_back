@@ -48,8 +48,9 @@ public class UserController {
                 .flatMap(this.userUseCase::saveUserCase)
                 .map(this.userApiRestMapper::userToUserDto)
                 .map(userDto -> {
-                    log.debug("Finish saveUser with userDto: {}", userDto);
-                    return new GenericResponseDTO<>(ResponseCode.KAUS001, userDto);
+                    var response = new GenericResponseDTO<>(ResponseCode.KAUS001, userDto);
+                    log.debug("Finish saveUser with response: {}", response);
+                    return response;
                 }), "saveUser");
     }
 }

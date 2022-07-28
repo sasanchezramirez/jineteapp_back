@@ -3,8 +3,10 @@ package co.com.kiire.apirest.dto;
 import co.com.kiire.model.config.ResponseCode;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Getter;
+import lombok.ToString;
 
 @Getter
+@ToString
 @Schema(description = "Modelo de salida generica")
 public class GenericResponseDTO<T> {
 
