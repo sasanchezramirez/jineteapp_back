@@ -1,6 +1,6 @@
 package co.com.kiire.persistence.service;
 
-import co.com.kiire.gateway.contract.SaveUserGateway;
+import co.com.kiire.gateway.contract.UserGateway;
 import co.com.kiire.model.User;
 import co.com.kiire.persistence.mapper.UserPersistenceMapper;
 import co.com.kiire.persistence.repository.UserRepository;
@@ -12,7 +12,7 @@ import reactor.core.publisher.Mono;
 @Service
 @AllArgsConstructor
 @EnableR2dbcRepositories(basePackageClasses = UserRepository.class)
-public class SaveUserService implements SaveUserGateway {
+public class UserService implements UserGateway {
 
     private final UserRepository userRepository;
     private final UserPersistenceMapper userPersistenceMapper;

@@ -6,6 +6,6 @@ import reactor.core.publisher.Mono;
 /**
  * Interfaz necesaria para guardar un usuario
  */
-public interface SaveUserGateway {
+public interface UserGateway {
     Mono<User> saveUser(User user);
 }

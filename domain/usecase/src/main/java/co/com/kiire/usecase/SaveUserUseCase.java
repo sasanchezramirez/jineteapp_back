@@ -1,7 +1,7 @@
 package co.com.kiire.usecase;
 
 import co.com.kiire.gateway.contract.RestrictiveListGateway;
-import co.com.kiire.gateway.contract.SaveUserGateway;
+import co.com.kiire.gateway.contract.UserGateway;
 import co.com.kiire.model.User;
 import co.com.kiire.usecase.error.FoundRestrictiveListException;
 import lombok.RequiredArgsConstructor;
@@ -13,7 +13,7 @@ import reactor.core.publisher.Mono;
 @RequiredArgsConstructor
 public class SaveUserUseCase {
 
-    private final SaveUserGateway saveUserGateway;
+    private final UserGateway userGateway;
     private final RestrictiveListGateway restrictiveListGateway;
 
     /**
@@ -27,6 +27,6 @@ public class SaveUserUseCase {
                     user.validateUser();
                     return this.restrictiveListGateway.validateList(usr);
                 })
-                .flatMap(this.saveUserGateway::saveUser);
+                .flatMap(this.userGateway::saveUser);
     }
 }
