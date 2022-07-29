@@ -65,7 +65,7 @@ subprojects {
 }
 
 task jacocoMergedReport(type: JacocoReport) {
-    dependsOn subprojects.test
+    dependsOn subprojects.jacocoTestReport
     finalizedBy jacocoTestCoverageVerification
     additionalSourceDirs.setFrom files(subprojects.sourceSets.main.allSource.srcDirs)
     sourceDirectories.setFrom files(subprojects.sourceSets.main.allSource.srcDirs)

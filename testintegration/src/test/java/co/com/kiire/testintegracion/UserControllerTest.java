@@ -43,7 +43,6 @@ class UserControllerTest {
     @Test
     void saveUserTestWithSaveUserSuccess() {
         User user = new User();
-        user.setId(1);
         user.setName("nombreTest");
         user.setCode("007");
         user.setPassword("1234");
