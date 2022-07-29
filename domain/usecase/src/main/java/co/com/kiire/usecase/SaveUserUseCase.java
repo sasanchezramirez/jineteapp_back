@@ -3,7 +3,6 @@ package co.com.kiire.usecase;
 import co.com.kiire.gateway.contract.RestrictiveListGateway;
 import co.com.kiire.gateway.contract.UserGateway;
 import co.com.kiire.model.User;
-import co.com.kiire.usecase.error.FoundRestrictiveListException;
 import lombok.RequiredArgsConstructor;
 import reactor.core.publisher.Mono;
 
@@ -19,9 +18,8 @@ public class SaveUserUseCase {
     /**
      * @param user Usuario
      * @return Mono del usuario guardado
-     * @throws FoundRestrictiveListException Exception lanzada si el usuario se encuentra en lista restrictiva
      */
-    public Mono<User> saveUserCase(User user) throws FoundRestrictiveListException {
+    public Mono<User> execute(User user) {
         return Mono.just(user)
                 .flatMap(usr -> {
                     user.validateUser();
