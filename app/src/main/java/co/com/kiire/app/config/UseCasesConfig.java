@@ -1,20 +1,16 @@
 package co.com.kiire.app.config;
 
-import co.com.kiire.gateway.contract.RestrictiveListGateway;
-import co.com.kiire.gateway.contract.UserGateway;
-import co.com.kiire.usecase.SaveUserUseCase;
-import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.FilterType;
 
 /**
  * UseCasesConfig
  * use cases instantiation
  */
 @Configuration
+@ComponentScan(basePackages = "co.com.kiire.usecase",
+        includeFilters = {@ComponentScan.Filter(type = FilterType.REGEX, pattern = "^.+UseCase$")},
+        useDefaultFilters = false)
 public class UseCasesConfig {
-
-    @Bean
-    public SaveUserUseCase userUseCase(UserGateway userGateway, RestrictiveListGateway restrictiveListGateway) {
-        return new SaveUserUseCase(userGateway, restrictiveListGateway);
-    }
 }
