@@ -14,7 +14,7 @@ public class UserDTO {
     @Schema(description = "Id del usuario")
     private Integer id;
 
-    @Schema(description = "Código del usuario")
+    @Schema(description = "Nombre del usuario")
     private String name;
 
     @Schema(description = "Código del usuario")
