@@ -16,6 +16,8 @@ spring:
 logging:
   level:
     co.com.kiire: DEBUG
+    io.r2dbc.postgresql.QUERY: DEBUG
+    io.r2dbc.postgresql.PARAM: DEBUG
 
 server:
-  port: 8079
+  port: 9079

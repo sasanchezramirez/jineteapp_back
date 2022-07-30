@@ -6,6 +6,7 @@ import co.com.kiire.model.User;
 import lombok.RequiredArgsConstructor;
 import reactor.core.publisher.Mono;
 
+//casos de uso no tienen log
 /**
  * Clase encargada de definir la implementacion del caso de uso para guardar al usuario
  */

@@ -1,6 +1,7 @@
 package co.com.kiire.gateway.contract;
 
 import co.com.kiire.model.User;
+import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 /**
@@ -8,4 +9,5 @@ import reactor.core.publisher.Mono;
  */
 public interface UserGateway {
     Mono<User> saveUser(User user);
+    Flux<User> getUsers(String name);
 }

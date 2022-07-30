@@ -108,4 +108,22 @@ class UserControllerTest {
                 .expectBody()
                 .jsonPath("$.status").isEqualTo(ResponseCode.KAUS002.getStatus());
     }
+
+    @Test
+    void getUsersTestWithSuccess() {
+        WebTestClient.ResponseSpec responseSpec = this.webTestClient.get()
+                .uri(uriBuilder ->
+                        uriBuilder
+                                .path("/api/v1/users")
+                                .queryParam("name", "nombreTest")
+                                .build())
+                .exchange();
+        responseSpec.expectStatus()
+                .isOk()
+                .expectBody()
+                .jsonPath("$.responseCode").isEqualTo(ResponseCode.KAUS001.name())
+                .jsonPath("$.status").isEqualTo(ResponseCode.KAUS001.getStatus())
+                .jsonPath("$.responseMessage").isEqualTo(ResponseCode.KAUS001.getHtmlMessage())
+                .jsonPath("$.data").isArray();
+    }
 }
