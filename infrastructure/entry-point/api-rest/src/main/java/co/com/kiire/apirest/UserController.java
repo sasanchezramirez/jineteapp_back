@@ -48,12 +48,12 @@ public class UserController {
     public Mono<GenericResponseDTO<UserDTO>> saveUser(@RequestBody SaveUserDto saveUserDto) {
         HandlerErrorController<UserDTO> handlerErrorController = new HandlerErrorController<>();
         return handlerErrorController.addErrors(Mono.just(saveUserDto)
-                .doOnSuccess(request -> log.debug("Init saveUser with request {}: ", request))
+                .doOnSuccess(request -> log.debug("Init saveUser with request {}", request))
                 .map(this.userApiRestMapper::saveUserDtoToUser)
                 .flatMap(this.userUseCase::execute)
                 .map(this.userApiRestMapper::userToUserDto)
                 .map(userDto -> new GenericResponseDTO<>(ResponseCode.KAUS001, userDto))
-                .doOnSuccess(response -> log.debug("Finish saveUser with response {}: ", response)), "saveUser");
+                .doOnSuccess(response -> log.debug("Finish saveUser with response {}", response)), "saveUser");
     }
 
     @GetMapping(value = "/users")
@@ -66,12 +66,12 @@ public class UserController {
             @Parameter(name = "name", description = "Nombre de los usuarios", required = true, in = ParameterIn.QUERY) @RequestParam String name) {
         HandlerErrorController<List<UserDTO>> handlerErrorController = new HandlerErrorController<>();
         return handlerErrorController.addErrors(Mono.just(name)
-                .doOnSuccess(request -> log.debug("Init saveUser with request {}: ", request))
+                .doOnSuccess(request -> log.debug("Init saveUser with request {}", request))
                 .flatMapMany(this.getUsersUseCase::execute)
                 .map(this.userApiRestMapper::userToUserDto)
                 .collectList()
                 .map(userDto -> new GenericResponseDTO<>(ResponseCode.KAUS001, userDto))
-                .doOnSuccess(response -> log.debug("Finish saveUser with response {}: ", response)), "saveUser");
+                .doOnSuccess(response -> log.debug("Finish saveUser with response {}", response)), "saveUser");
     }
 
 }

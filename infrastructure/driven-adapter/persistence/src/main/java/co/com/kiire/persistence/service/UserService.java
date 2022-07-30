@@ -31,7 +31,7 @@ public class UserService implements UserGateway {
                 .flatMap(this.userRepository::save)
                 .map(this.userPersistenceMapper::userEntityToUser)
                 .onErrorResume(exception -> {
-                    log.debug("Error in saveUser with exception {}: ", exception.getMessage());
+                    log.debug("Error in saveUser with exception {}", exception.getMessage());
                     return Mono.error(new UnexpectedException("Ocurrió un error inesperado. Por favor intenta de nuevo más tarde."));
                 });
     }
@@ -41,7 +41,7 @@ public class UserService implements UserGateway {
         return this.userRepository.findAllByName(name)
                 .map(this.userPersistenceMapper::userEntityToUser)
                 .onErrorResume(exception -> {
-                    log.debug("Error in getUsers with exception {}: ", exception.getMessage());
+                    log.debug("Error in getUsers with exception {}", exception.getMessage());
                     return Mono.error(new UnexpectedException("Ocurrió un error inesperado. Por favor intenta de nuevo más tarde."));
                 });
     }

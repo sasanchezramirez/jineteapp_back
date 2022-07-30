@@ -29,7 +29,7 @@ public class RestrictiveListTransunionService implements RestrictiveListGateway 
             this.forbidden.add("1111111111");
         }
         return Mono.just(user)
-                .doOnSuccess(request -> log.debug("Init validateList with request {}: ", request))
+                .doOnSuccess(request -> log.debug("Init validateList with request {}", request))
                 .flatMap(usr -> {
                     if (this.forbidden.contains(user.getCode())) {
                         return Mono.error(new FoundRestrictiveListException("Usuario se encuentra en lista restrictiva"));
@@ -37,9 +37,9 @@ public class RestrictiveListTransunionService implements RestrictiveListGateway 
                         return Mono.just(user);
                     }
                 })
-                .doOnSuccess(response -> log.debug("Finish validateList with response {}: ", response))
+                .doOnSuccess(response -> log.debug("Finish validateList with response {}", response))
                 .onErrorResume(exception -> {
-                    log.debug("Error in validateList with exception {}: ", exception.getMessage());
+                    log.debug("Error in validateList with exception {}", exception.getMessage());
                     if (exception instanceof FoundRestrictiveListException) {
                         return Mono.error(new FoundRestrictiveListException(exception.getMessage()));
                     } else {
