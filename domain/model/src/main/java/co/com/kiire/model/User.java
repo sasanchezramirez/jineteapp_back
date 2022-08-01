@@ -1,6 +1,7 @@
 package co.com.kiire.model;
 
-import co.com.kiire.model.error.FieldException;
+import co.com.kiire.model.config.ResponseCode;
+import co.com.kiire.model.error.CustomException;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
@@ -19,11 +20,11 @@ public class User {
 
     public void validateUser() {
         if (null == this.getName()) {
-            throw new FieldException("Campo Nombre es obligatorio");
+            throw new CustomException(ResponseCode.KAUS002, "Nombre");
         } else if (null == this.getCode()) {
-            throw new FieldException("Campo Código es obligatorio");
+            throw new CustomException(ResponseCode.KAUS002, "Código");
         } else if (null == this.getPassword()) {
-            throw new FieldException("Campo Contraseña es obligatorio");
+            throw new CustomException(ResponseCode.KAUS002, "Contraseña");
         }
     }
 }

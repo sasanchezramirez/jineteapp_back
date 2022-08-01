@@ -5,7 +5,7 @@ import co.com.kiire.app.MainApplication;
 import co.com.kiire.gateway.contract.RestrictiveListGateway;
 import co.com.kiire.model.User;
 import co.com.kiire.model.config.ResponseCode;
-import co.com.kiire.usecase.error.FoundRestrictiveListException;
+import co.com.kiire.model.error.CustomException;
 import io.r2dbc.spi.ConnectionFactory;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
@@ -79,7 +79,7 @@ class UserControllerTest {
         saveUserDto.setPassword("1234");
 
         Mockito.when(this.restrictiveListGateway.validateList(ArgumentMatchers.argThat(usr -> usr.getCode().equalsIgnoreCase(saveUserDto.getCode()))))
-                .thenReturn(Mono.error(new FoundRestrictiveListException("Usuario se encuentra en lista restrictiva")));
+                .thenReturn(Mono.error(new CustomException(ResponseCode.KAUS003)));
 
         WebTestClient.ResponseSpec responseSpec = this.webTestClient.post()
                 .uri("/api/v1/user")
@@ -89,7 +89,7 @@ class UserControllerTest {
         responseSpec.expectStatus()
                 .isOk()
                 .expectBody()
-                .jsonPath("$.status").isEqualTo(ResponseCode.KAUS002.getStatus());
+                .jsonPath("$.status").isEqualTo(ResponseCode.KAUS003.getStatus());
     }
 
     @Test

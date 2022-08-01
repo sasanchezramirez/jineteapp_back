@@ -2,7 +2,8 @@ package co.com.kiire.persistence.service;
 
 import co.com.kiire.gateway.contract.UserGateway;
 import co.com.kiire.model.User;
-import co.com.kiire.model.error.UnexpectedException;
+import co.com.kiire.model.config.ResponseCode;
+import co.com.kiire.model.error.CustomException;
 import co.com.kiire.persistence.mapper.UserPersistenceMapper;
 import co.com.kiire.persistence.repository.UserRepository;
 import lombok.AllArgsConstructor;
@@ -32,7 +33,7 @@ public class UserService implements UserGateway {
                 .map(this.userPersistenceMapper::userEntityToUser)
                 .onErrorResume(exception -> {
                     log.debug("Error in saveUser with exception {}", exception.getMessage());
-                    return Mono.error(new UnexpectedException("Ocurrió un error inesperado. Por favor intenta de nuevo más tarde."));
+                    return Mono.error(new CustomException(ResponseCode.KAUS000));
                 });
     }
 
@@ -42,7 +43,7 @@ public class UserService implements UserGateway {
                 .map(this.userPersistenceMapper::userEntityToUser)
                 .onErrorResume(exception -> {
                     log.debug("Error in getUsers with exception {}", exception.getMessage());
-                    return Mono.error(new UnexpectedException("Ocurrió un error inesperado. Por favor intenta de nuevo más tarde."));
+                    return Mono.error(new CustomException(ResponseCode.KAUS000));
                 });
     }
 }

@@ -2,8 +2,8 @@ package co.com.kiire.restrictivelisttransunion.service;
 
 import co.com.kiire.gateway.contract.RestrictiveListGateway;
 import co.com.kiire.model.User;
-import co.com.kiire.model.error.UnexpectedException;
-import co.com.kiire.usecase.error.FoundRestrictiveListException;
+import co.com.kiire.model.config.ResponseCode;
+import co.com.kiire.model.error.CustomException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Mono;
@@ -32,7 +32,7 @@ public class RestrictiveListTransunionService implements RestrictiveListGateway 
                 .doOnSuccess(request -> log.debug("Init validateList with request {}", request))
                 .flatMap(usr -> {
                     if (this.forbidden.contains(user.getCode())) {
-                        return Mono.error(new FoundRestrictiveListException("Usuario se encuentra en lista restrictiva"));
+                        return Mono.error(new CustomException(ResponseCode.KAUS003));
                     } else {
                         return Mono.just(user);
                     }
@@ -40,10 +40,10 @@ public class RestrictiveListTransunionService implements RestrictiveListGateway 
                 .doOnSuccess(response -> log.debug("Finish validateList with response {}", response))
                 .onErrorResume(exception -> {
                     log.debug("Error in validateList with exception {}", exception.getMessage());
-                    if (exception instanceof FoundRestrictiveListException) {
-                        return Mono.error(new FoundRestrictiveListException(exception.getMessage()));
+                    if (exception instanceof CustomException) {
+                        return Mono.error(exception);
                     } else {
-                        return Mono.error(new UnexpectedException("Ocurrió un error inesperado. Por favor intenta de nuevo más tarde."));
+                        return Mono.error(new CustomException(ResponseCode.KAUS000));
                     }
                 });
     }
