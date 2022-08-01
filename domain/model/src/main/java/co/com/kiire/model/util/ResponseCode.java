@@ -7,8 +7,9 @@ package co.com.kiire.model.util;
 public enum ResponseCode {
     KAR000(500, "Ocurrió un error inesperado, por favor intenta mas tarde."),
     KAR001(200, "Operación exitosa."),
-    KAR002(400, "Campo {0} es obligatorio."),
-    KAR003(403, "Usuario se encuentra en lista restrictiva.");
+    KAR002(400, "Campos no son validos."),
+    KAR003(403, "Usuario se encuentra en lista restrictiva."),
+    KAR004(0, "Campo {0} es obligatorio.");
 
     private final int status;
     private final String htmlMessage;

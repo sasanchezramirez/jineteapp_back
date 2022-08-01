@@ -6,6 +6,8 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 
+import java.text.MessageFormat;
+
 /**
  * Clase que representa al usuario en el dominio
  */
@@ -19,12 +21,24 @@ public class User {
     private String password;
 
     public void validateUser() {
-        if (null == this.getName()) {
-            throw new CustomException(ResponseCode.KAR002, "Nombre");
-        } else if (null == this.getCode()) {
-            throw new CustomException(ResponseCode.KAR002, "Código");
-        } else if (null == this.getPassword()) {
-            throw new CustomException(ResponseCode.KAR002, "Contraseña");
+        if ((null == this.getName())
+                || (null == this.getCode())
+                || (null == this.getPassword())) {
+            var exception = new CustomException(ResponseCode.KAR002);
+            if (null == this.getName()) {
+                var fieldError = new FieldError("name", MessageFormat.format(ResponseCode.KAR004.getHtmlMessage(), ("Nombre")));
+                exception.addFieldError(fieldError);
+            }
+            if (null == this.getCode()) {
+                var fieldError = new FieldError("code", MessageFormat.format(ResponseCode.KAR004.getHtmlMessage(), ("Código")));
+                exception.addFieldError(fieldError);
+            }
+            if (null == this.getPassword()) {
+                var fieldError = new FieldError("password", MessageFormat.format(ResponseCode.KAR004.getHtmlMessage(), ("Contraseña")));
+                exception.addFieldError(fieldError);
+            }
+            throw exception;
         }
     }
+
 }
