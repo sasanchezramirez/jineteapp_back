@@ -2,12 +2,13 @@ package co.com.kiire.model.util;
 
 /**
  * Enumeracion con el mapeo de los códigos de respuesta
+ * Kiire(1)-nombre del micro(2)-secuencia(3)
  */
 public enum ResponseCode {
-    KAUS000(500, "Ocurrió un error inesperado, por favor intenta mas tarde."),
-    KAUS001(200, "Operación exitosa."),
-    KAUS002(400, "Campo {0} es obligatorio."),
-    KAUS003(403, "Usuario se encuentra en lista restrictiva.");
+    KAR000(500, "Ocurrió un error inesperado, por favor intenta mas tarde."),
+    KAR001(200, "Operación exitosa."),
+    KAR002(400, "Campo {0} es obligatorio."),
+    KAR003(403, "Usuario se encuentra en lista restrictiva.");
 
     private final int status;
     private final String htmlMessage;

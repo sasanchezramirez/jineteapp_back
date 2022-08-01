@@ -20,7 +20,7 @@ public class HandlerErrorController<T> {
                         responseCode = customException.getResponseCode();
                         messageException = exception.getMessage();
                     } else {
-                        responseCode = ResponseCode.KAUS000;
+                        responseCode = ResponseCode.KAR000;
                         messageException = responseCode.getHtmlMessage();
                     }
                     return Mono.just(new GenericResponseDTO<>(

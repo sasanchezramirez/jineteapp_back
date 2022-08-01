@@ -33,7 +33,7 @@ public class UserService implements UserGateway {
                 .map(this.userPersistenceMapper::userEntityToUser)
                 .onErrorResume(exception -> {
                     log.debug("Error in saveUser with exception {}", exception.getMessage());
-                    return Mono.error(new CustomException(ResponseCode.KAUS000));
+                    return Mono.error(new CustomException(ResponseCode.KAR000));
                 });
     }
 
@@ -43,7 +43,7 @@ public class UserService implements UserGateway {
                 .map(this.userPersistenceMapper::userEntityToUser)
                 .onErrorResume(exception -> {
                     log.debug("Error in getUsers with exception {}", exception.getMessage());
-                    return Mono.error(new CustomException(ResponseCode.KAUS000));
+                    return Mono.error(new CustomException(ResponseCode.KAR000));
                 });
     }
 }

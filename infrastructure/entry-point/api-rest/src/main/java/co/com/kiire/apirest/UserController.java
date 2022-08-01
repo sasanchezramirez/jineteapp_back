@@ -52,7 +52,7 @@ public class UserController {
                 .map(this.userApiRestMapper::saveUserDtoToUser)
                 .flatMap(this.userUseCase::execute)
                 .map(this.userApiRestMapper::userToUserDto)
-                .map(userDto -> new GenericResponseDTO<>(ResponseCode.KAUS001, userDto))
+                .map(userDto -> new GenericResponseDTO<>(ResponseCode.KAR001, userDto))
                 .doOnSuccess(response -> log.debug("Finish saveUser with response {}", response)), "saveUser");
     }
 
@@ -70,7 +70,7 @@ public class UserController {
                 .flatMapMany(this.getUsersUseCase::execute)
                 .map(this.userApiRestMapper::userToUserDto)
                 .collectList()
-                .map(userDto -> new GenericResponseDTO<>(ResponseCode.KAUS001, userDto))
+                .map(userDto -> new GenericResponseDTO<>(ResponseCode.KAR001, userDto))
                 .doOnSuccess(response -> log.debug("Finish saveUser with response {}", response)), "saveUser");
     }
 

@@ -32,7 +32,7 @@ public class RestrictiveListTransunionService implements RestrictiveListGateway 
                 .doOnSuccess(request -> log.debug("Init validateList with request {}", request))
                 .flatMap(usr -> {
                     if (this.forbidden.contains(user.getCode())) {
-                        return Mono.error(new CustomException(ResponseCode.KAUS003));
+                        return Mono.error(new CustomException(ResponseCode.KAR003));
                     } else {
                         return Mono.just(user);
                     }
@@ -43,7 +43,7 @@ public class RestrictiveListTransunionService implements RestrictiveListGateway 
                     if (exception instanceof CustomException) {
                         return Mono.error(exception);
                     } else {
-                        return Mono.error(new CustomException(ResponseCode.KAUS000));
+                        return Mono.error(new CustomException(ResponseCode.KAR000));
                     }
                 });
     }

@@ -62,9 +62,9 @@ class UserControllerTest {
         responseSpec.expectStatus()
                 .isOk()
                 .expectBody()
-                .jsonPath("$.responseCode").isEqualTo(ResponseCode.KAUS001.name())
-                .jsonPath("$.status").isEqualTo(ResponseCode.KAUS001.getStatus())
-                .jsonPath("$.responseMessage").isEqualTo(ResponseCode.KAUS001.getHtmlMessage())
+                .jsonPath("$.responseCode").isEqualTo(ResponseCode.KAR001.name())
+                .jsonPath("$.status").isEqualTo(ResponseCode.KAR001.getStatus())
+                .jsonPath("$.responseMessage").isEqualTo(ResponseCode.KAR001.getHtmlMessage())
                 .jsonPath("$.data.id").isNotEmpty()
                 .jsonPath("$.data.name").isEqualTo(user.getName())
                 .jsonPath("$.data.code").isEqualTo(user.getCode())
@@ -79,7 +79,7 @@ class UserControllerTest {
         saveUserDto.setPassword("1234");
 
         Mockito.when(this.restrictiveListGateway.validateList(ArgumentMatchers.argThat(usr -> usr.getCode().equalsIgnoreCase(saveUserDto.getCode()))))
-                .thenReturn(Mono.error(new CustomException(ResponseCode.KAUS003)));
+                .thenReturn(Mono.error(new CustomException(ResponseCode.KAR003)));
 
         WebTestClient.ResponseSpec responseSpec = this.webTestClient.post()
                 .uri("/api/v1/user")
@@ -89,7 +89,7 @@ class UserControllerTest {
         responseSpec.expectStatus()
                 .isOk()
                 .expectBody()
-                .jsonPath("$.status").isEqualTo(ResponseCode.KAUS003.getStatus());
+                .jsonPath("$.status").isEqualTo(ResponseCode.KAR003.getStatus());
     }
 
     @Test
@@ -106,7 +106,7 @@ class UserControllerTest {
         responseSpec.expectStatus()
                 .isOk()
                 .expectBody()
-                .jsonPath("$.status").isEqualTo(ResponseCode.KAUS002.getStatus());
+                .jsonPath("$.status").isEqualTo(ResponseCode.KAR002.getStatus());
     }
 
     @Test
@@ -121,9 +121,9 @@ class UserControllerTest {
         responseSpec.expectStatus()
                 .isOk()
                 .expectBody()
-                .jsonPath("$.responseCode").isEqualTo(ResponseCode.KAUS001.name())
-                .jsonPath("$.status").isEqualTo(ResponseCode.KAUS001.getStatus())
-                .jsonPath("$.responseMessage").isEqualTo(ResponseCode.KAUS001.getHtmlMessage())
+                .jsonPath("$.responseCode").isEqualTo(ResponseCode.KAR001.name())
+                .jsonPath("$.status").isEqualTo(ResponseCode.KAR001.getStatus())
+                .jsonPath("$.responseMessage").isEqualTo(ResponseCode.KAR001.getHtmlMessage())
                 .jsonPath("$.data").isArray();
     }
 }

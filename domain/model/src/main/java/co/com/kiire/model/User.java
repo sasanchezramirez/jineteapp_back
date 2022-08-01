@@ -20,11 +20,11 @@ public class User {
 
     public void validateUser() {
         if (null == this.getName()) {
-            throw new CustomException(ResponseCode.KAUS002, "Nombre");
+            throw new CustomException(ResponseCode.KAR002, "Nombre");
         } else if (null == this.getCode()) {
-            throw new CustomException(ResponseCode.KAUS002, "Código");
+            throw new CustomException(ResponseCode.KAR002, "Código");
         } else if (null == this.getPassword()) {
-            throw new CustomException(ResponseCode.KAUS002, "Contraseña");
+            throw new CustomException(ResponseCode.KAR002, "Contraseña");
         }
     }
 }
