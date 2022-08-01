@@ -16,8 +16,8 @@ public class HandlerErrorController<T> {
                     log.debug("Error in {}: {} with error: {}", method, exception.getClass().getSimpleName(), exception.getMessage());
                     ResponseCode responseCode;
                     String messageException;
-                    if (exception instanceof CustomException) {
-                        responseCode = ((CustomException) exception).getResponseCode();
+                    if (exception instanceof CustomException customException) {
+                        responseCode = customException.getResponseCode();
                         messageException = exception.getMessage();
                     } else {
                         responseCode = ResponseCode.KAUS000;
