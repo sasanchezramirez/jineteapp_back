@@ -16,7 +16,7 @@ public class CustomException extends RuntimeException {
     private final ResponseCode responseCode;
 
     public CustomException(ResponseCode responseCode, String... params) {
-        super(MessageFormat.format(responseCode.getHtmlMessage(), params));
+        super(MessageFormat.format(responseCode.getHtmlMessage(), (Object[]) params));
         this.responseCode = responseCode;
     }
 
