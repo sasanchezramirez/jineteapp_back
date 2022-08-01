@@ -1,4 +1,4 @@
-package co.com.kiire.apirest.util.mapper;
+package co.com.kiire.apirest.mapper;
 
 import co.com.kiire.apirest.dto.SaveUserDto;
 import co.com.kiire.apirest.dto.UserDTO;

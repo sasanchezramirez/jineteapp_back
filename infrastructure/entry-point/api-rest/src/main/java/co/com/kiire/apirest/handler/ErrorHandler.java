@@ -1,4 +1,4 @@
-package co.com.kiire.apirest.util;
+package co.com.kiire.apirest.handler;
 
 import co.com.kiire.apirest.dto.GenericResponseDTO;
 import co.com.kiire.model.util.ResponseCode;
@@ -7,9 +7,9 @@ import reactor.core.publisher.Mono;
 import reactor.util.Logger;
 import reactor.util.Loggers;
 
-public class HandlerErrorController<T> {
+public class ErrorHandler<T> {
 
-    private static final Logger log = Loggers.getLogger(HandlerErrorController.class.getName());
+    private static final Logger log = Loggers.getLogger(ErrorHandler.class.getName());
 
     public Mono<GenericResponseDTO<T>> addErrors(Mono<GenericResponseDTO<T>> genericResponseDTOMono, String method) {
         return genericResponseDTOMono.onErrorResume(exception -> {
