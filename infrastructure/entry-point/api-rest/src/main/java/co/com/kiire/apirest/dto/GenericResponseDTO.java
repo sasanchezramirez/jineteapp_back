@@ -1,6 +1,6 @@
 package co.com.kiire.apirest.dto;
 
-import co.com.kiire.model.config.ResponseCode;
+import co.com.kiire.model.util.ResponseCode;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Getter;
 import lombok.ToString;

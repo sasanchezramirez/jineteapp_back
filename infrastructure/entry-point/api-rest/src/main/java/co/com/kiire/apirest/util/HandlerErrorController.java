@@ -1,7 +1,7 @@
 package co.com.kiire.apirest.util;
 
 import co.com.kiire.apirest.dto.GenericResponseDTO;
-import co.com.kiire.model.config.ResponseCode;
+import co.com.kiire.model.util.ResponseCode;
 import co.com.kiire.model.error.CustomException;
 import reactor.core.publisher.Mono;
 import reactor.util.Logger;

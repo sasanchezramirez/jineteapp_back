@@ -2,7 +2,7 @@ package co.com.kiire.persistence.service;
 
 import co.com.kiire.gateway.contract.UserGateway;
 import co.com.kiire.model.User;
-import co.com.kiire.model.config.ResponseCode;
+import co.com.kiire.model.util.ResponseCode;
 import co.com.kiire.model.error.CustomException;
 import co.com.kiire.persistence.mapper.UserPersistenceMapper;
 import co.com.kiire.persistence.repository.UserRepository;

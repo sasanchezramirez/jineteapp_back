@@ -1,4 +1,4 @@
-package co.com.kiire.model.config;
+package co.com.kiire.model.util;
 
 /**
  * Enumeracion con el mapeo de los códigos de respuesta

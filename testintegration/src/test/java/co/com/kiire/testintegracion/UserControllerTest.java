@@ -4,7 +4,7 @@ import co.com.kiire.apirest.dto.SaveUserDto;
 import co.com.kiire.app.MainApplication;
 import co.com.kiire.gateway.contract.RestrictiveListGateway;
 import co.com.kiire.model.User;
-import co.com.kiire.model.config.ResponseCode;
+import co.com.kiire.model.util.ResponseCode;
 import co.com.kiire.model.error.CustomException;
 import io.r2dbc.spi.ConnectionFactory;
 import org.junit.jupiter.api.BeforeAll;

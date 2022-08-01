@@ -5,7 +5,7 @@ import co.com.kiire.apirest.dto.SaveUserDto;
 import co.com.kiire.apirest.dto.UserDTO;
 import co.com.kiire.apirest.util.HandlerErrorController;
 import co.com.kiire.apirest.util.mapper.UserApiRestMapper;
-import co.com.kiire.model.config.ResponseCode;
+import co.com.kiire.model.util.ResponseCode;
 import co.com.kiire.usecase.GetUsersUseCase;
 import co.com.kiire.usecase.SaveUserUseCase;
 import io.swagger.v3.oas.annotations.Operation;

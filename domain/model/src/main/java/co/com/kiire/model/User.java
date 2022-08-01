@@ -1,6 +1,6 @@
 package co.com.kiire.model;
 
-import co.com.kiire.model.config.ResponseCode;
+import co.com.kiire.model.util.ResponseCode;
 import co.com.kiire.model.error.CustomException;
 import lombok.Getter;
 import lombok.Setter;

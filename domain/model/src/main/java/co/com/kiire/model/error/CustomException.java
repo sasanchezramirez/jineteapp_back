@@ -1,6 +1,6 @@
 package co.com.kiire.model.error;
 
-import co.com.kiire.model.config.ResponseCode;
+import co.com.kiire.model.util.ResponseCode;
 
 import java.io.Serial;
 import java.text.MessageFormat;
