@@ -1,6 +1,7 @@
 package co.com.kiire.restrictivelisttransunion.service;
 
 import co.com.kiire.gateway.contract.RestrictiveListGateway;
+import co.com.kiire.gateway.contract.UserGateway;
 import co.com.kiire.model.User;
 import co.com.kiire.model.util.ResponseCode;
 import co.com.kiire.model.error.CustomException;
@@ -21,6 +22,9 @@ public class RestrictiveListTransunionService implements RestrictiveListGateway 
 
     private final List<String> forbidden;
 
+    /**
+     * @see RestrictiveListGateway#validateList(User)
+     */
     @Override
     public Mono<User> validateList(User user) {
         if (this.forbidden.isEmpty()) {
