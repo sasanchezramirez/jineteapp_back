@@ -32,9 +32,9 @@ public class UserService implements UserGateway {
                 .map(this.userPersistenceMapper::userToUserEntity)
                 .flatMap(this.userRepository::save)
                 .map(this.userPersistenceMapper::userEntityToUser)
-                .onErrorResume(exception -> {
+                .onErrorMap(exception -> {
                     log.debug("Error in saveUser with exception {}", exception.getMessage());
-                    return Mono.error(new CustomException(ResponseCode.KAR000));
+                    return new CustomException(ResponseCode.KAR000);
                 });
     }
 
@@ -45,9 +45,9 @@ public class UserService implements UserGateway {
     public Flux<User> getUsers(String name) {
         return this.userRepository.findAllByName(name)
                 .map(this.userPersistenceMapper::userEntityToUser)
-                .onErrorResume(exception -> {
+                .onErrorMap(exception -> {
                     log.debug("Error in getUsers with exception {}", exception.getMessage());
-                    return Mono.error(new CustomException(ResponseCode.KAR000));
+                    return new CustomException(ResponseCode.KAR000);
                 });
     }
 }

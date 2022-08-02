@@ -42,12 +42,12 @@ public class RestrictiveListTransunionService implements RestrictiveListGateway 
                     }
                 })
                 .doOnSuccess(response -> log.debug("Finish validateList with response {}", response))
-                .onErrorResume(exception -> {
+                .onErrorMap(exception -> {
                     log.debug("Error in validateList with exception {}", exception.getMessage());
                     if (exception instanceof CustomException) {
-                        return Mono.error(exception);
+                        return exception;
                     } else {
-                        return Mono.error(new CustomException(ResponseCode.KAR000));
+                        return new CustomException(ResponseCode.KAR000);
                     }
                 });
     }
