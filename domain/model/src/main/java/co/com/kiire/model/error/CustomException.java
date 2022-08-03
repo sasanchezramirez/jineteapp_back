@@ -8,6 +8,9 @@ import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Excepción personalizada
+ */
 public class CustomException extends RuntimeException {
 
     @Serial
