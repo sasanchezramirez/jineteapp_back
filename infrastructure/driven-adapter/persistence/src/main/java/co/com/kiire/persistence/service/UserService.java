@@ -1,6 +1,6 @@
 package co.com.kiire.persistence.service;
 
-import co.com.kiire.gateway.contract.UserGateway;
+import co.com.kiire.gateway.UserGateway;
 import co.com.kiire.model.User;
 import co.com.kiire.model.util.ResponseCode;
 import co.com.kiire.model.error.CustomException;

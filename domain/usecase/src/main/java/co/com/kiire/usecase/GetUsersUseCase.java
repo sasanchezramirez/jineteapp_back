@@ -1,6 +1,6 @@
 package co.com.kiire.usecase;
 
-import co.com.kiire.gateway.contract.UserGateway;
+import co.com.kiire.gateway.UserGateway;
 import co.com.kiire.model.User;
 import lombok.RequiredArgsConstructor;
 import reactor.core.publisher.Flux;

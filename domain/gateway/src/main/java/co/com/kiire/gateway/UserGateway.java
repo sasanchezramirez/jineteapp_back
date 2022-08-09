@@ -1,4 +1,4 @@
-package co.com.kiire.gateway.contract;
+package co.com.kiire.gateway;
 
 import co.com.kiire.model.User;
 import reactor.core.publisher.Flux;
