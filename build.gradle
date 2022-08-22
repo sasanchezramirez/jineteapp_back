@@ -65,7 +65,7 @@ sonarqube {
 		property 'sonar.junit.reportsPath', ''
 		property 'sonar.java.coveragePlugin', 'jacoco'
 		property 'sonar.coverage.jacoco.xmlReportPaths', "${project.buildDir}/reports/jacoco/jacocoMergedReport/jacocoMergedReport.xml"
-        property 'sonar.exclusions', '**/app/**,**/persistence/**,**/restrictivelisttransunion/**'
+        property 'sonar.exclusions', '**/app/**,**/persistence/**'
     }
 }
 

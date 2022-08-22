@@ -73,8 +73,7 @@ task jacocoMergedReport(type: JacocoReport) {
         fileTree(dir: it,
                 exclude: [
                         "**/app/**",
-                        "**/persistence/**",
-                        "**/restrictivelisttransunion/**"
+                        "**/persistence/**"
                 ]
         )
     })
@@ -96,8 +95,7 @@ jacocoTestCoverageVerification {
         classDirectories.setFrom(files(classDirectories.files.collect {
             fileTree(dir: it, exclude: [
                     "**/app/**",
-                    "**/persistence/**",
-                    "**/restrictivelisttransunion/**"
+                    "**/persistence/**"
             ])
         }))
     }
