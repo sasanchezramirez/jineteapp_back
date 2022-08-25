@@ -1,0 +1,69 @@
+version: 0.2
+
+env:
+  variables:
+    PROJECT_NAME: "kiire-back-archetype"
+    REPOSITORY_NAME: "kiire-ecr-archetype"
+    ECR_REGISTRY: "ECR_REGISTRY"
+    SONAR_HOST: "SONAR_HOST"
+    SONAR_TOKEN: "SONAR_TOKEN"
+    ENVIRONMENT: "ENVIRONMENT"
+    REPOSITORY_ENV: "REPOSITORY_ENV"
+
+phases:
+  install:
+    runtime-versions:
+      java: corretto17
+    commands:
+      - echo Installing gradle
+      - chmod +x gradlew
+      - echo Sonarqube configuration
+      - apt-get update
+      - apt-get install -y jq
+      - wget https://binaries.sonarsource.com/Distribution/sonar-scanner-cli/sonar-scanner-cli-3.3.0.1492-linux.zip
+      - unzip ./sonar-scanner-cli-3.3.0.1492-linux.zip
+      - export PATH=$PATH:./sonar-scanner-3.3.0.1492-linux/bin/
+
+  pre_build:
+    commands:
+      - echo Running test and dependency check
+      - ./gradlew dependencyCheckAnalyze
+      - ./gradlew sonarqube -Dsonar.projectKey=$PROJECT_NAME -Dsonar.host.url=$SONAR_HOST -Dsonar.login=$SONAR_TOKEN
+      - sleep 5
+      - "$(curl -s -u $SONAR_TOKEN: $SONAR_HOST/api/qualitygates/project_status?projectKey=$PROJECT_NAME > result.json)"
+      - cat result.json
+      - |
+          if expr "$(jq -r '.projectStatus.status' result.json)" : "ERROR"; then 
+            echo Build fails due to quality gates error;
+            exit 255; 
+          fi
+      - echo compiling code
+      - ./gradlew build
+
+  build:
+    commands:
+      - echo Build started on `date`
+      - echo Building and tagging Docker image
+      - REPOSITORY_URI=$ECR_REGISTRY/$REPOSITORY_NAME-$REPOSITORY_ENV
+      - IMAGE_TAG=$(date +%Y%m%d%H%M%S)
+      - |
+          if [ "$ENVIRONMENT" = "develop" ] ; then 
+            aws ecr get-login-password --region $AWS_DEFAULT_REGION | docker login --username AWS --password-stdin $ECR_REGISTRY;
+            docker build -f pipeline/Dockerfile -t $REPOSITORY_URI:latest .;
+            docker tag $REPOSITORY_URI:latest $REPOSITORY_URI:$IMAGE_TAG;
+          fi
+      - echo Build completed on `date`
+
+  post_build:
+    commands:
+      - echo Pushing docker image to ECR
+      - |
+          if [ "$ENVIRONMENT" = "develop" ] ; then 
+            docker push $REPOSITORY_URI:latest;
+            docker push $REPOSITORY_URI:$IMAGE_TAG;
+          fi
+      - printf '[{"name":"%s","imageUri":"%s"}]' $PROJECT_NAME $REPOSITORY_URI:latest > imagedefinitions.json
+
+artifacts:
+  files:
+    - imagedefinitions.json

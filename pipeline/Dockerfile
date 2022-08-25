@@ -1,4 +1,4 @@
-FROM eclipse-temurin:17-jdk-alpine as builder
+FROM 142779088135.dkr.ecr.us-east-1.amazonaws.com/eclipse-temurin:17-jdk-alpine as builder
 
 RUN apk add tzdata
 RUN cp /usr/share/zoneinfo/America/Bogota /localtime
@@ -10,7 +10,7 @@ RUN jlink --compress=2 --module-path /opt/java/openjdk/jmods/ \
 ,jdk.management,jdk.crypto.cryptoki \
 --no-header-files --no-man-pages --output /jlinked
 
-FROM alpine:latest
+FROM 142779088135.dkr.ecr.us-east-1.amazonaws.com/alpine:latest
 
 COPY --from=builder /localtime /etc/localtime/
 RUN echo "America/Bogota" > /etc/timezone \
@@ -28,4 +28,3 @@ ADD ./build/libs/archetype-1.0.jar app.jar
 EXPOSE 8080
 
 ENTRYPOINT ["java","-Djava.security.egd=file:/dev/./urandom","-Duser.timezone=America/Bogota","-jar","/app.jar"]
-

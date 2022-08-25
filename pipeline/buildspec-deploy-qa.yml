@@ -1,0 +1,67 @@
+version: 0.2
+
+env:
+  git-credential-helper: yes
+  variables:
+    PROJECT_NAME: "kiire-back-archetype"
+    REPOSITORY_NAME: "kiire-ecr-archetype"
+    CUSTOM_PROFILE: "kiireqa"
+  parameter-store:
+    ECR_REGISTRY_DEV: "ECR_REGISTRY_DEV"
+    ECR_REGISTRY_QA: "ECR_REGISTRY_QA"
+    SONAR_HOST: "SONAR_HOST"
+    SONAR_TOKEN: "SONAR_TOKEN"
+    ENVIRONMENT: "ENVIRONMENT"
+    ACCESS_KEY_ID: "ACCESS_KEY_ID_QA"
+    SECRET_ACCESS_KEY: "SECRET_ACCESS_KEY_QA"
+
+phases:
+  install:
+    runtime-versions:
+      java: corretto17
+    commands:
+      - apt-get update
+      - apt-get install -y jq
+      - pip3 --version
+      - sudo apt install -y python3-pip
+      - sudo pip3 install git-remote-codecommit
+      - echo Installing gradle
+      - chmod +x gradlew
+      - echo Sonarqube configuration
+      - wget https://binaries.sonarsource.com/Distribution/sonar-scanner-cli/sonar-scanner-cli-3.3.0.1492-linux.zip
+      - unzip ./sonar-scanner-cli-3.3.0.1492-linux.zip
+      - export PATH=$PATH:./sonar-scanner-3.3.0.1492-linux/bin/
+
+  build:
+    commands:
+      - echo Build started on `date`
+      - echo Building and tagging Docker image
+      - aws ecr get-login-password --region $AWS_DEFAULT_REGION | docker login --username AWS --password-stdin $ECR_REGISTRY_DEV
+      - REPOSITORY_URI_DEV=$ECR_REGISTRY_DEV/$REPOSITORY_NAME-dev      
+      - docker pull $REPOSITORY_URI_DEV:latest      
+      - echo Build completed on `date`
+
+  post_build:
+    commands:
+      - echo Cloning repository from Dev Account
+      - git clone --mirror https://git-codecommit.us-east-1.amazonaws.com/v1/repos/$PROJECT_NAME $PROJECT_NAME
+      - echo Pushing docker image to ECR
+      - aws configure set aws_access_key_id $ACCESS_KEY_ID --profile $CUSTOM_PROFILE
+      - aws configure set aws_secret_access_key $SECRET_ACCESS_KEY --profile $CUSTOM_PROFILE
+      - aws configure set region us-east-1 --profile $CUSTOM_PROFILE
+      - aws configure set output json --profile $CUSTOM_PROFILE
+      - | 
+          cd $PROJECT_NAME
+          git branch
+          git config user.email "cicd@kiire.com"
+          git config user.name "AWS DevOps"
+          git config http.postBuffer 524288000
+          git remote add $CUSTOM_PROFILE codecommit://$CUSTOM_PROFILE@$PROJECT_NAME
+          git push --mirror $CUSTOM_PROFILE
+      - aws ecr get-login-password --region $AWS_DEFAULT_REGION --profile $CUSTOM_PROFILE | docker login --username AWS --password-stdin $ECR_REGISTRY_QA
+      - REPOSITORY_URI_QA=$ECR_REGISTRY_QA/$REPOSITORY_NAME-qa
+      - IMAGE_TAG=$(date +%Y%m%d%H%M%S)
+      - docker tag $REPOSITORY_URI_DEV:latest $REPOSITORY_URI_QA:latest
+      - docker tag $REPOSITORY_URI_DEV:latest $REPOSITORY_URI_QA:$IMAGE_TAG
+      - docker push $REPOSITORY_URI_QA:latest
+      - docker push $REPOSITORY_URI_QA:$IMAGE_TAG
