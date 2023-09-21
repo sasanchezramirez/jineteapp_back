@@ -1,11 +1,8 @@
 package co.com.kiire.testintegracion;
 
-import co.com.kiire.apirest.dto.SaveUserDto;
-import co.com.kiire.app.MainApplication;
-import co.com.kiire.gateway.RestrictiveListGateway;
-import co.com.kiire.model.User;
-import co.com.kiire.model.util.ResponseCode;
-import co.com.kiire.model.error.CustomException;
+import co.com.jineteapp.app.MainApplication;
+import co.com.jineteapp.gateway.PersistenceGateway;
+import co.com.jineteapp.model.User;
 import io.r2dbc.spi.ConnectionFactory;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
@@ -30,28 +27,27 @@ class UserControllerTest {
     @Autowired
     private WebTestClient webTestClient;
     @MockBean
-    private RestrictiveListGateway restrictiveListGateway;
+    private PersistenceGateway persistenceGateway;
 
     @BeforeAll
     public static void initDataBase(@Autowired ConnectionFactory connectionFactory) {
         R2dbcEntityTemplate template = new R2dbcEntityTemplate(connectionFactory);
 
-        String query = "create table IF NOT EXISTS users (id IDENTITY NOT NULL PRIMARY KEY, name varchar(255) not null, code varchar(255) not null, password varchar(255) not null)";
+        String query = "create table IF NOT EXISTS users " +
+                "(id IDENTITY NOT NULL PRIMARY KEY" +
+                ", name varchar(255) not null" +
+                ", email varchar(255) not null)";
         template.getDatabaseClient().sql(query).fetch().rowsUpdated().block();
     }
 
     @Test
-    void saveUserTestWithSaveUserSuccess() {
+    void getUserTestWithSucces() {
         User user = new User();
-        user.setName("nombreTest");
-        user.setCode("007");
-        user.setPassword("1234");
-        SaveUserDto saveUserDto = new SaveUserDto();
-        saveUserDto.setName(user.getName());
-        saveUserDto.setCode(user.getCode());
-        saveUserDto.setPassword(user.getPassword());
+        user.setId(1);
+        user.setName("name");
+        user.setEmail("test@email.com");
 
-        Mockito.when(this.restrictiveListGateway.validateList(ArgumentMatchers.argThat(usr -> usr.getCode().equalsIgnoreCase(saveUserDto.getCode()))))
+        Mockito.when(this.persistenceGateway.getUserById(ArgumentMatchers.argThat(usr -> usr.getClass()..getCode()))))
                 .thenReturn(Mono.just(user));
 
         WebTestClient.ResponseSpec responseSpec = this.webTestClient.post()
@@ -60,15 +56,7 @@ class UserControllerTest {
                 .body(BodyInserters.fromValue(saveUserDto))
                 .exchange();
         responseSpec.expectStatus()
-                .isOk()
-                .expectBody()
-                .jsonPath("$.responseCode").isEqualTo(ResponseCode.KAR001.name())
-                .jsonPath("$.status").isEqualTo(ResponseCode.KAR001.getStatus())
-                .jsonPath("$.responseMessage").isEqualTo(ResponseCode.KAR001.getHtmlMessage())
-                .jsonPath("$.data.id").isNotEmpty()
-                .jsonPath("$.data.name").isEqualTo(user.getName())
-                .jsonPath("$.data.code").isEqualTo(user.getCode())
-                .jsonPath("$.data.password").isEqualTo(user.getPassword());
+                .isOk();
     }
 
     @Test

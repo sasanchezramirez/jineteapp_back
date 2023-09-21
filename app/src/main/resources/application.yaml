@@ -1,13 +1,12 @@
 spring:
   application:
-    name: kiire-back-archetype
-  webflux:
-    base-path: /archetype
+    name: jineteapp-back
+
 
   r2dbc:
-    url: r2dbc:postgresql://localhost:5432/kiire
-    username: postgres
-    password: K11r3
+    url: r2dbc:postgresql://localhost:5432/jineteapp
+    username: santiago
+    password: 0406
   data:
     r2dbc:
       repositories:
@@ -15,9 +14,9 @@ spring:
 
 logging:
   level:
-    co.com.kiire: DEBUG
+    co.com.jineteapp: DEBUG
     io.r2dbc.postgresql.QUERY: DEBUG
     io.r2dbc.postgresql.PARAM: DEBUG
 
 server:
-  port: 9079
+  port: 8080
