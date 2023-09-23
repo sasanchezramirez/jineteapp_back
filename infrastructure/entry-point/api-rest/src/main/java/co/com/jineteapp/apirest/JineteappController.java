@@ -38,7 +38,7 @@ public class JineteappController {
             @ApiResponse(responseCode = "200", description = "Respuesta exitosa"),
             @ApiResponse(responseCode = "500", description = "Error inesperado durante el proceso", content = @Content(schema = @Schema(implementation = String.class)))})
     public Mono<GenericResponseDto<UserDto>> getUser(
-    @Parameter(name = "id", description = "User id", required = true, in = ParameterIn.HEADER) @RequestParam Integer id) {
+    @Parameter(name = "id", description = "User id", required = true, in = ParameterIn.PATH) @PathVariable  Integer id) {
         return this.getUserHandler.getUserById(id);
     }
 

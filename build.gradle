@@ -28,7 +28,7 @@ dependencies {
 	implementation project(':app-service')
 }
 
-group 'co.com.kiire'
+group 'co.com.jineteapp'
 version '1.0'
 
 sourceCompatibility = JavaVersion.VERSION_17

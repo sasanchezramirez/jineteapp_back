@@ -17,6 +17,7 @@ logging:
     co.com.jineteapp: DEBUG
     io.r2dbc.postgresql.QUERY: DEBUG
     io.r2dbc.postgresql.PARAM: DEBUG
+    org.springframework.web: DEBUG
 
 server:
   port: 8080
