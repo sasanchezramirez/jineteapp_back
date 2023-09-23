@@ -22,25 +22,25 @@ import reactor.core.publisher.Mono;
 @RequiredArgsConstructor
 @RequestMapping("/api/v1")
 @CrossOrigin(origins = "*", methods = {RequestMethod.POST})
-@Tag(name = "UserController", description = "Grupo de Apis Rest de apis REST de usuarios en el dominio de onboarding.")
+@Tag(name = "UserController", description = "Group of Api RESTs that are exposed to communicate front and back")
 public class JineteappController {
     private final GetUserHandler getUserHandler;
     private final CreditCardHandler creditCardHandler;
 
     @GetMapping(value = "/test")
-    @Operation(summary = "Endpoint de prueba", description = "Este endpoint simplemente devuelve un string de respuesta.")
+    @Operation(summary = "Testing endpoint", description = "This endpoint is used to test the connection")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Respuesta exitosa"),
-            @ApiResponse(responseCode = "500", description = "Error inesperado durante el proceso", content = @Content(schema = @Schema(implementation = String.class)))})
+            @ApiResponse(responseCode = "200", description = "Success"),
+            @ApiResponse(responseCode = "500", description = "Unexpected error", content = @Content(schema = @Schema(implementation = String.class)))})
     public Mono<String> testEndpoint() {
         return Mono.just("Respuesta de prueba");
     }
 
     @GetMapping(value = "/user/{id}")
-    @Operation(summary = "Endpoint de prueba", description = "Este endpoint simplemente devuelve un string de respuesta.")
+    @Operation(summary = "Endpoint de prueba", description = "This endpoint will return a user object")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Respuesta exitosa"),
-            @ApiResponse(responseCode = "500", description = "Error inesperado durante el proceso", content = @Content(schema = @Schema(implementation = String.class)))})
+            @ApiResponse(responseCode = "200", description = "Success"),
+            @ApiResponse(responseCode = "500", description = "Unexpected error", content = @Content(schema = @Schema(implementation = String.class)))})
     public Mono<GenericResponseDto<UserDto>> getUser(
     @Parameter(name = "id", description = "User id", required = true, in = ParameterIn.PATH) @PathVariable  Integer id) {
         return this.getUserHandler.getUserById(id);

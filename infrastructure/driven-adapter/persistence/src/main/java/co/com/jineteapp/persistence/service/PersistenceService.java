@@ -22,18 +22,21 @@ public class PersistenceService implements PersistenceGateway {
     private final PersistenceMapper persistenceMapper;
     @Override
     public Mono<User> getUserById(Integer id) {
+        log.debug("Using persistence gateway to find a user by its id");
         return this.userRepository.findUserById(id)
                 .map(this.persistenceMapper::userEntityToUser);
     }
 
     @Override
     public Mono<CreditCard> getCreditCardByUserId(Integer userId) {
+        log.debug("Using persistence gateway to find a credit card related to a user_id");
         return this.creditCardRepository.findCreditCardByUserId(userId)
                 .map(this.persistenceMapper::creditCardEntityToCreditCard);
     }
 
     @Override
     public Mono<Boolean> saveCreditCard(CreditCard creditCard) {
+        log.debug("Using persistence gateway to save a credit card");
         CreditCardEntity creditCardEntity = this.persistenceMapper.creditCardToCreditCardEntity(creditCard);
         return this.creditCardRepository.save(creditCardEntity)
                 .flatMap(savedCreditCard -> {
