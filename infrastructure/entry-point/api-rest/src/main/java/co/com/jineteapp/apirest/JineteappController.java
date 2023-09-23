@@ -1,7 +1,10 @@
 package co.com.jineteapp.apirest;
 
+import co.com.jineteapp.apirest.dto.CreditCardDto;
 import co.com.jineteapp.apirest.dto.GenericResponseDto;
+import co.com.jineteapp.apirest.dto.SaveCreditCardDto;
 import co.com.jineteapp.apirest.dto.UserDto;
+import co.com.jineteapp.apirest.handler.CreditCardHandler;
 import co.com.jineteapp.apirest.handler.GetUserHandler;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -22,6 +25,7 @@ import reactor.core.publisher.Mono;
 @Tag(name = "UserController", description = "Grupo de Apis Rest de apis REST de usuarios en el dominio de onboarding.")
 public class JineteappController {
     private final GetUserHandler getUserHandler;
+    private final CreditCardHandler creditCardHandler;
 
     @GetMapping(value = "/test")
     @Operation(summary = "Endpoint de prueba", description = "Este endpoint simplemente devuelve un string de respuesta.")
@@ -40,6 +44,25 @@ public class JineteappController {
     public Mono<GenericResponseDto<UserDto>> getUser(
     @Parameter(name = "id", description = "User id", required = true, in = ParameterIn.PATH) @PathVariable  Integer id) {
         return this.getUserHandler.getUserById(id);
+    }
+
+    @GetMapping(value = "/credit-card/{user_id}")
+    @Operation(summary = "Endpoint to choose what credit card will be used", description = "This endpoint will return a creditCard object to use")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Success"),
+            @ApiResponse(responseCode = "500", description = "Unexpected error", content = @Content(schema = @Schema(implementation = String.class)))})
+    public Mono<GenericResponseDto<CreditCardDto>> getCreditCard(
+            @Parameter(name = "user_id", description = "User id", required = true, in = ParameterIn.PATH) @PathVariable  Integer userId) {
+        return this.creditCardHandler.getCreditCard(userId);
+    }
+    @PostMapping(value = "/new-credit-card")
+    @Operation(summary = "Endpoint to choose add a new credit card", description = "This endpoint will return a response that validates the new credit card status")
+    @io.swagger.v3.oas.annotations.parameters.RequestBody(description = "JSON object with the information of the new credit card", required = true, content = @Content(schema = @Schema(implementation = SaveCreditCardDto.class)))
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Success"),
+            @ApiResponse(responseCode = "500", description = "Unexpected error", content = @Content(schema = @Schema(implementation = String.class)))})
+    public Mono<GenericResponseDto<Boolean>> saveCreditCard(@RequestBody SaveCreditCardDto saveCreditCardDto){
+        return this.creditCardHandler.saveCreditCard(saveCreditCardDto);
     }
 
 }

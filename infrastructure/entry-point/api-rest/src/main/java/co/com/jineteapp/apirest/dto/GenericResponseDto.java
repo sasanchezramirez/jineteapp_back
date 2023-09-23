@@ -12,7 +12,7 @@ public class GenericResponseDto<T> {
 
     public GenericResponseDto(T data){
         this.success = true;
-        this.message = null;
+        this.message = "Success";
         this.data = data;
     }
 
