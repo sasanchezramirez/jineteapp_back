@@ -46,7 +46,7 @@ public class JineteappController {
         return this.getUserHandler.getUserById(id);
     }
 
-    @GetMapping(value = "/credit-card/{user_id}")
+    @GetMapping(value = "/credit-card/{userId}")
     @Operation(summary = "Endpoint to choose what credit card will be used", description = "This endpoint will return a creditCard object to use")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Success"),
