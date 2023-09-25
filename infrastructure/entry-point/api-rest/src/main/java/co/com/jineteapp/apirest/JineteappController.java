@@ -1,11 +1,9 @@
 package co.com.jineteapp.apirest;
 
-import co.com.jineteapp.apirest.dto.CreditCardDto;
-import co.com.jineteapp.apirest.dto.GenericResponseDto;
-import co.com.jineteapp.apirest.dto.SaveCreditCardDto;
-import co.com.jineteapp.apirest.dto.UserDto;
+import co.com.jineteapp.apirest.dto.*;
 import co.com.jineteapp.apirest.handler.CreditCardHandler;
 import co.com.jineteapp.apirest.handler.GetUserHandler;
+import co.com.jineteapp.apirest.handler.TransactionHandler;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.enums.ParameterIn;
@@ -26,6 +24,7 @@ import reactor.core.publisher.Mono;
 public class JineteappController {
     private final GetUserHandler getUserHandler;
     private final CreditCardHandler creditCardHandler;
+    private final TransactionHandler transactionHandler;
 
     @GetMapping(value = "/test")
     @Operation(summary = "Testing endpoint", description = "This endpoint is used to test the connection")
@@ -56,7 +55,7 @@ public class JineteappController {
         return this.creditCardHandler.getCreditCard(userId);
     }
     @PostMapping(value = "/new-credit-card")
-    @Operation(summary = "Endpoint to choose add a new credit card", description = "This endpoint will return a response that validates the new credit card status")
+    @Operation(summary = "Endpoint to save add a new credit card", description = "This endpoint will return a response that validates the new credit card status")
     @io.swagger.v3.oas.annotations.parameters.RequestBody(description = "JSON object with the information of the new credit card", required = true, content = @Content(schema = @Schema(implementation = SaveCreditCardDto.class)))
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Success"),
@@ -64,5 +63,13 @@ public class JineteappController {
     public Mono<GenericResponseDto<Boolean>> saveCreditCard(@RequestBody SaveCreditCardDto saveCreditCardDto){
         return this.creditCardHandler.saveCreditCard(saveCreditCardDto);
     }
-
+    @PostMapping(value = "/new-transaction")
+    @Operation(summary = "Endpoint to save add a new transaction", description = "This endpoint will return a response that validates the new transaction status")
+    @io.swagger.v3.oas.annotations.parameters.RequestBody(description = "JSON object with the information of the new transaction", required = true, content = @Content(schema = @Schema(implementation = SaveTransactionDto.class)))
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Success"),
+            @ApiResponse(responseCode = "500", description = "Unexpected error", content = @Content(schema = @Schema(implementation = String.class)))})
+    public Mono<GenericResponseDto<Boolean>> saveTransaction(@RequestBody SaveTransactionDto saveTransactionDto){
+        return this.transactionHandler.saveTransaction(saveTransactionDto);
+    }
 }

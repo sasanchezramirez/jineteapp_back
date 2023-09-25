@@ -27,6 +27,7 @@ public class CreditCardHandler {
     }
 
     public Mono<GenericResponseDto<Boolean>> saveCreditCard(SaveCreditCardDto saveCreditCardDto){
+        log.debug("Initializing saveCreditCard");
         CreditCard creditCard = this.jineteappRestApiMapper.saveCreditCardDtoToCreditCard(saveCreditCardDto);
         return this.creditCardUseCase.saveCreditCardUseCase(creditCard)
                 .map(GenericResponseDto::new);

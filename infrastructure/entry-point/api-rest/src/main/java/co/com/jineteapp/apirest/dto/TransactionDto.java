@@ -1,15 +1,11 @@
-package co.com.jineteapp.persistence.entity;
+package co.com.jineteapp.apirest.dto;
 
 import lombok.Getter;
 import lombok.Setter;
-import org.springframework.data.annotation.Id;
-import org.springframework.data.relational.core.mapping.Table;
 
 @Getter
 @Setter
-@Table(name = "transactions")
-public class TransactionEntity {
-    @Id
+public class TransactionDto {
     private Integer id;
     private Integer creditCardId;
     private Integer userId;
