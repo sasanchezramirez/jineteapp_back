@@ -1,6 +1,7 @@
 package co.com.jineteapp.gateway;
 
 import co.com.jineteapp.model.CreditCard;
+import co.com.jineteapp.model.Transaction;
 import co.com.jineteapp.model.User;
 import reactor.core.publisher.Mono;
 
@@ -29,4 +30,6 @@ public interface PersistenceGateway {
      * @return Boolean that confirms that a credit card was saved
      */
     Mono<Boolean> saveCreditCard(CreditCard creditCard);
+    Mono<Boolean> saveTransaction(Transaction transaction);
+
 }

@@ -2,10 +2,13 @@ package co.com.jineteapp.persistence.service;
 
 import co.com.jineteapp.gateway.PersistenceGateway;
 import co.com.jineteapp.model.CreditCard;
+import co.com.jineteapp.model.Transaction;
 import co.com.jineteapp.model.User;
 import co.com.jineteapp.persistence.entity.CreditCardEntity;
+import co.com.jineteapp.persistence.entity.TransactionEntity;
 import co.com.jineteapp.persistence.mapper.PersistenceMapper;
 import co.com.jineteapp.persistence.repository.CreditCardRepository;
+import co.com.jineteapp.persistence.repository.TransactionRepository;
 import co.com.jineteapp.persistence.repository.UserRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -20,6 +23,7 @@ public class PersistenceService implements PersistenceGateway {
     private final UserRepository userRepository;
     private final CreditCardRepository creditCardRepository;
     private final PersistenceMapper persistenceMapper;
+    private final TransactionRepository transactionRepository;
     @Override
     public Mono<User> getUserById(Integer id) {
         log.debug("Using persistence gateway to find a user by its id");
@@ -45,6 +49,21 @@ public class PersistenceService implements PersistenceGateway {
                 })
                 .onErrorResume(e -> {
                     log.error("An error occurred while saving the credit card: "+ e );
+                    return Mono.just(Boolean.FALSE);
+                });
+    }
+
+    @Override
+    public Mono<Boolean> saveTransaction(Transaction transaction) {
+        log.debug("Using persistence gateway to save a transaction");
+        TransactionEntity transactionEntity = this.persistenceMapper.transactionToTransactionEntity(transaction);
+        return this.transactionRepository.save(transactionEntity)
+                .flatMap(savedTransaction -> {
+                    log.debug("Transaction successfully added");
+                    return Mono.just(Boolean.TRUE);
+                })
+                .onErrorResume(e -> {
+                    log.error("An error occurred while saving the transaction: "+ e );
                     return Mono.just(Boolean.FALSE);
                 });
     }
