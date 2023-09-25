@@ -12,6 +12,7 @@ import co.com.jineteapp.persistence.repository.TransactionRepository;
 import co.com.jineteapp.persistence.repository.UserRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
+import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.util.Logger;
 import reactor.util.Loggers;
@@ -66,5 +67,12 @@ public class PersistenceService implements PersistenceGateway {
                     log.error("An error occurred while saving the transaction: "+ e );
                     return Mono.just(Boolean.FALSE);
                 });
+    }
+
+    @Override
+    public Flux<Transaction> getTransactionByUserId(Integer userId) {
+        log.debug("Using persistence gateway to get a transaction");
+        return this.transactionRepository.findTransactionByUserId(userId)
+                .map(this.persistenceMapper::transactionEntityToTransaction);
     }
 }
