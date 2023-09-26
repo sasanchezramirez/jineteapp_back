@@ -6,4 +6,5 @@ import reactor.core.publisher.Flux;
 
 public interface TransactionRepository extends R2dbcRepository<TransactionEntity, Integer> {
     Flux<TransactionEntity> findTransactionByUserId(Integer userId);
+    Flux<TransactionEntity> findTransactionByCreditCardId(Integer creditCardId);
 }

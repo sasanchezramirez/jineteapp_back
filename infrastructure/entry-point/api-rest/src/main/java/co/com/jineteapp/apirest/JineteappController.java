@@ -27,17 +27,8 @@ public class JineteappController {
     private final CreditCardHandler creditCardHandler;
     private final TransactionHandler transactionHandler;
 
-    @GetMapping(value = "/test")
-    @Operation(summary = "Testing endpoint", description = "This endpoint is used to test the connection")
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Success"),
-            @ApiResponse(responseCode = "500", description = "Unexpected error", content = @Content(schema = @Schema(implementation = String.class)))})
-    public Mono<String> testEndpoint() {
-        return Mono.just("Respuesta de prueba");
-    }
-
     @GetMapping(value = "/user/{id}")
-    @Operation(summary = "Endpoint de prueba", description = "This endpoint will return a user object")
+    @Operation(summary = "Endpoint to get a user", description = "This endpoint will return a user object")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Success"),
             @ApiResponse(responseCode = "500", description = "Unexpected error", content = @Content(schema = @Schema(implementation = String.class)))})
