@@ -64,13 +64,22 @@ public class JineteappController {
     public Mono<GenericResponseDto<Boolean>> saveTransaction(@RequestBody SaveTransactionDto saveTransactionDto){
         return this.transactionHandler.saveTransaction(saveTransactionDto);
     }
-    @GetMapping(value = "/transaction/{userId}")
-    @Operation(summary = "Endpoint to choose find transactions", description = "This endpoint will return a transaction object to use")
+    @GetMapping(value = "/transaction-by-user/{userId}")
+    @Operation(summary = "Endpoint to choose find transactions by its user id", description = "This endpoint will return a transaction object to use")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Success"),
             @ApiResponse(responseCode = "500", description = "Unexpected error", content = @Content(schema = @Schema(implementation = String.class)))})
-    public Flux<GenericResponseDto<TransactionDto>> getTransaction(
+    public Flux<GenericResponseDto<TransactionDto>> getTransactionByUserId(
             @Parameter(name = "user_id", description = "User id", required = true, in = ParameterIn.PATH) @PathVariable  Integer userId) {
         return this.transactionHandler.getTransactionByUserId(userId);
+    }
+    @GetMapping(value = "/transaction-by-credit-card/{creditCardId}")
+    @Operation(summary = "Endpoint to choose find transactions by its credit card id", description = "This endpoint will return a transaction object to use")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Success"),
+            @ApiResponse(responseCode = "500", description = "Unexpected error", content = @Content(schema = @Schema(implementation = String.class)))})
+    public Flux<GenericResponseDto<TransactionDto>> getTransactionByCreditCardId(
+            @Parameter(name = "creditCardId", description = "Credit card id", required = true, in = ParameterIn.PATH) @PathVariable  Integer creditCardId) {
+        return this.transactionHandler.getTransactionByCreditCardId(creditCardId);
     }
 }

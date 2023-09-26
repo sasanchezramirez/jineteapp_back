@@ -22,4 +22,9 @@ public class TransactionUseCase {
         log.debug("Initializing getTransactionByUserId");
         return this.persistenceGateway.getTransactionByUserId(userId);
     }
+
+    public Flux<Transaction> getTransactionCreditCardId(Integer creditCardId){
+        log.debug("Initializing getTransactionCreditCardId");
+        return this.persistenceGateway.getTransactionByCreditCardId(creditCardId);
+    }
 }

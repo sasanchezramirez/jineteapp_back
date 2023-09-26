@@ -33,5 +33,6 @@ public interface PersistenceGateway {
     Mono<Boolean> saveCreditCard(CreditCard creditCard);
     Mono<Boolean> saveTransaction(Transaction transaction);
     Flux<Transaction> getTransactionByUserId(Integer userId);
+    Flux<Transaction> getTransactionByCreditCardId(Integer creditCardId);
 
 }

@@ -31,4 +31,10 @@ public class TransactionHandler {
                 .map(this.jineteappRestApiMapper::transactionToTransactionDto)
                 .map(GenericResponseDto::new);
     }
+    public Flux<GenericResponseDto<TransactionDto>> getTransactionByCreditCardId(Integer creditCardId){
+        log.debug("Initializing getTransactionByCreditCardId");
+        return  this.transactionUseCase.getTransactionCreditCardId(creditCardId)
+                .map(this.jineteappRestApiMapper::transactionToTransactionDto)
+                .map(GenericResponseDto::new);
+    }
 }

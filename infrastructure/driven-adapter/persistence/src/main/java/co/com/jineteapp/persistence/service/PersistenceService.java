@@ -71,8 +71,15 @@ public class PersistenceService implements PersistenceGateway {
 
     @Override
     public Flux<Transaction> getTransactionByUserId(Integer userId) {
-        log.debug("Using persistence gateway to get a transaction");
+        log.debug("Using persistence gateway to get a transaction by its userId");
         return this.transactionRepository.findTransactionByUserId(userId)
+                .map(this.persistenceMapper::transactionEntityToTransaction);
+    }
+
+    @Override
+    public Flux<Transaction> getTransactionByCreditCardId(Integer creditCardId) {
+        log.debug("Using persistence gateway to get a transaction by its creditCardId");
+        return this.transactionRepository.findTransactionByCreditCardId(creditCardId)
                 .map(this.persistenceMapper::transactionEntityToTransaction);
     }
 }
