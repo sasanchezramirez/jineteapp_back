@@ -31,8 +31,26 @@ public interface PersistenceGateway {
      * @return Boolean that confirms that a credit card was saved
      */
     Mono<Boolean> saveCreditCard(CreditCard creditCard);
+    /**
+     * Saves a transaction to the database
+     *
+     * @param transaction Object to be saved on the database
+     * @return Boolean that confirms that a transaction was saved
+     */
     Mono<Boolean> saveTransaction(Transaction transaction);
+    /**
+     * Gets transactions from the database
+     *
+     * @param userId parameter used to relate a transaction with a user
+     * @return transactions from the database
+     */
     Flux<Transaction> getTransactionByUserId(Integer userId);
+    /**
+     * Gets transactions from the database from a card
+     *
+     * @param creditCardId parameter used to relate a transaction with a creditCard
+     * @return transactions from the database
+     */
     Flux<Transaction> getTransactionByCreditCardId(Integer creditCardId);
 
 }
