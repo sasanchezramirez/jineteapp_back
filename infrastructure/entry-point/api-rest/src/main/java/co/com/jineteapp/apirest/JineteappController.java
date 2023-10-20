@@ -1,6 +1,7 @@
 package co.com.jineteapp.apirest;
 
 import co.com.jineteapp.apirest.dto.*;
+import co.com.jineteapp.apirest.handler.AuthHandler;
 import co.com.jineteapp.apirest.handler.CreditCardHandler;
 import co.com.jineteapp.apirest.handler.GetUserHandler;
 import co.com.jineteapp.apirest.handler.TransactionHandler;
@@ -26,6 +27,7 @@ public class JineteappController {
     private final GetUserHandler getUserHandler;
     private final CreditCardHandler creditCardHandler;
     private final TransactionHandler transactionHandler;
+    private final AuthHandler authHandler;
 
     @GetMapping(value = "/user/{id}")
     @Operation(summary = "Endpoint to get a user", description = "This endpoint will return a user object")
@@ -82,4 +84,14 @@ public class JineteappController {
             @Parameter(name = "creditCardId", description = "Credit card id", required = true, in = ParameterIn.PATH) @PathVariable  Integer creditCardId) {
         return this.transactionHandler.getTransactionByCreditCardId(creditCardId);
     }
+    @GetMapping(value = "/auth/login")
+    @Operation(summary = "Endpoint to login to jineteapp", description = "This endpoint will return a confirmation for the login")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Success"),
+            @ApiResponse(responseCode = "500", description = "Unexpected error", content = @Content(schema = @Schema(implementation = String.class)))})
+    public Mono<GenericResponseDto<Boolean>> getTransactionByCreditCardId(@RequestBody LoginDto loginDto){
+        return this.authHandler.login(loginDto);
+    }
+
+
 }
