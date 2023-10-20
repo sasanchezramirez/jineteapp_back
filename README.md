@@ -1,1 +1,1 @@
-Arquetipo de guia para los microservicios del proyecto Kiire.
+Backend for jinteapp. It is based on a hexagonal architechture. 
