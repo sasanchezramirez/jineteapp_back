@@ -2,6 +2,7 @@ package co.com.jineteapp.apirest.mapper;
 
 import co.com.jineteapp.apirest.dto.*;
 import co.com.jineteapp.model.CreditCard;
+import co.com.jineteapp.model.Login;
 import co.com.jineteapp.model.Transaction;
 import co.com.jineteapp.model.User;
 import org.mapstruct.Mapper;
@@ -17,4 +18,5 @@ public interface JineteappRestApiMapper {
     @Mapping(target = "id", ignore = true)
     Transaction saveTransactionDtoToTransaction(SaveTransactionDto saveTransactionDto);
     TransactionDto transactionToTransactionDto(Transaction transaction);
+    Login loginDtoToLogin(LoginDto loginDto);
 }

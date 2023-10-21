@@ -82,4 +82,11 @@ public class PersistenceService implements PersistenceGateway {
         return this.transactionRepository.findTransactionByCreditCardId(creditCardId)
                 .map(this.persistenceMapper::transactionEntityToTransaction);
     }
+
+    @Override
+    public Mono<User> getUserByEmail(String email) {
+        log.debug("Using persistence gateway to get a user by its email");
+        return this.userRepository.findUserByEmail(email)
+                .map(this.persistenceMapper::userEntityToUser);
+    }
 }

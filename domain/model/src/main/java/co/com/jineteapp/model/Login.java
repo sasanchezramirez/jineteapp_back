@@ -3,11 +3,9 @@ package co.com.jineteapp.model;
 import lombok.Getter;
 import lombok.Setter;
 
-@Setter
 @Getter
-public class User {
-    private Integer id;
-    private String name;
+@Setter
+public class Login {
     private String email;
     private String password;
 }
