@@ -2,7 +2,6 @@ package co.com.jineteapp.usecase;
 
 import co.com.jineteapp.gateway.PersistenceGateway;
 import co.com.jineteapp.model.Login;
-import co.com.jineteapp.model.User;
 import lombok.RequiredArgsConstructor;
 import reactor.core.publisher.Mono;
 import reactor.util.Logger;
@@ -16,10 +15,8 @@ public class AuthUseCase {
     private final PersistenceGateway persistenceGateway;
 
     public Mono<Boolean> execute(Login login){
+        log.info("Init password validation");
         return this.persistenceGateway.getUserByEmail(login.getEmail())
-                .map(user -> {
-                    if (Objects.equals(user.getPassword(), login.getPassword()))
-                        return true;
-                });
+                .map(user -> Objects.equals(user.getPassword(), login.getPassword()));
     }
 }
