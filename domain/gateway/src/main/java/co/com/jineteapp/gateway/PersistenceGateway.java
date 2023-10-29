@@ -52,6 +52,12 @@ public interface PersistenceGateway {
      * @return transactions from the database
      */
     Flux<Transaction> getTransactionByCreditCardId(Integer creditCardId);
+    /**
+     * Gets a user by its email
+     *
+     * @param email user's email
+     * @return a user
+     */
     Mono<User> getUserByEmail(String email);
 
 }
