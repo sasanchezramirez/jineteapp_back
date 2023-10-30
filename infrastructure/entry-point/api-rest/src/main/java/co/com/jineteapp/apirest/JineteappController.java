@@ -22,7 +22,7 @@ import reactor.core.publisher.Mono;
 @RequiredArgsConstructor
 @RequestMapping("/api/v1")
 @CrossOrigin(origins = "*", methods = {RequestMethod.POST})
-@Tag(name = "UserController", description = "Group of Api RESTs that are exposed to communicate front and back")
+@Tag(name = "JineteappController", description = "Group of Api RESTs that are exposed to communicate front and back")
 public class JineteappController {
     private final GetUserHandler getUserHandler;
     private final CreditCardHandler creditCardHandler;
