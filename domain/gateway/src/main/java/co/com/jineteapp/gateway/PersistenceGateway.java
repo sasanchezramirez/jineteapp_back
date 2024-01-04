@@ -59,5 +59,12 @@ public interface PersistenceGateway {
      * @return a user
      */
     Mono<User> getUserByEmail(String email);
+    /**
+     * Gets a user by its email
+     *
+     * @param user user's email
+     * @return a user
+     */
+    Mono<User> saveUser(User user);
 
 }

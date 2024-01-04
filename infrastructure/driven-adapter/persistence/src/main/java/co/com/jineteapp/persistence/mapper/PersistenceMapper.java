@@ -11,6 +11,7 @@ import org.mapstruct.Mapper;
 @Mapper
 public interface PersistenceMapper {
     User userEntityToUser(UserEntity userEntity);
+    UserEntity userToUserEntity(User user);
     CreditCard creditCardEntityToCreditCard(CreditCardEntity creditCardEntity);
     CreditCardEntity creditCardToCreditCardEntity(CreditCard creditCard);
     TransactionEntity transactionToTransactionEntity(Transaction transaction);
