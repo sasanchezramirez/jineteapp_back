@@ -96,7 +96,7 @@ public class PersistenceService implements PersistenceGateway {
         log.debug("Using persistence gateway to save a user");
         UserEntity userEntity;
         userEntity = this.persistenceMapper.userToUserEntity(user);
-        return this.userRepository.saveUser(userEntity)
+        return this.userRepository.save(userEntity)
                 .map(this.persistenceMapper::userEntityToUser);
     }
 }
