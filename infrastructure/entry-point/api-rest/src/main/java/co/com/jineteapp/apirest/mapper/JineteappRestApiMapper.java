@@ -12,6 +12,7 @@ import reactor.core.publisher.Mono;
 @Mapper
 public interface JineteappRestApiMapper {
     UserDto userToUserDto(User user);
+    User userDtoToUser(UserDto userDto);
     CreditCardDto creditCardToCreditCardDto(CreditCard creditCard);
     @Mapping(target = "id", ignore = true)
     CreditCard saveCreditCardDtoToCreditCard(SaveCreditCardDto saveCreditCardDto);

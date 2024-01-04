@@ -6,6 +6,7 @@ import co.com.jineteapp.model.Transaction;
 import co.com.jineteapp.model.User;
 import co.com.jineteapp.persistence.entity.CreditCardEntity;
 import co.com.jineteapp.persistence.entity.TransactionEntity;
+import co.com.jineteapp.persistence.entity.UserEntity;
 import co.com.jineteapp.persistence.mapper.PersistenceMapper;
 import co.com.jineteapp.persistence.repository.CreditCardRepository;
 import co.com.jineteapp.persistence.repository.TransactionRepository;
@@ -87,6 +88,15 @@ public class PersistenceService implements PersistenceGateway {
     public Mono<User> getUserByEmail(String email) {
         log.debug("Using persistence gateway to get a user by its email");
         return this.userRepository.findUserByEmail(email)
+                .map(this.persistenceMapper::userEntityToUser);
+    }
+
+    @Override
+    public Mono<User> saveUser(User user) {
+        log.debug("Using persistence gateway to save a user");
+        UserEntity userEntity;
+        userEntity = this.persistenceMapper.userToUserEntity(user);
+        return this.userRepository.save(userEntity)
                 .map(this.persistenceMapper::userEntityToUser);
     }
 }

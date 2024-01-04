@@ -3,8 +3,9 @@ package co.com.jineteapp.apirest;
 import co.com.jineteapp.apirest.dto.*;
 import co.com.jineteapp.apirest.handler.AuthHandler;
 import co.com.jineteapp.apirest.handler.CreditCardHandler;
-import co.com.jineteapp.apirest.handler.GetUserHandler;
+import co.com.jineteapp.apirest.handler.UserHandler;
 import co.com.jineteapp.apirest.handler.TransactionHandler;
+import co.com.jineteapp.model.User;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.enums.ParameterIn;
@@ -24,7 +25,7 @@ import reactor.core.publisher.Mono;
 @CrossOrigin(origins = "*", methods = {RequestMethod.POST})
 @Tag(name = "JineteappController", description = "Group of Api RESTs that are exposed to communicate front and back")
 public class JineteappController {
-    private final GetUserHandler getUserHandler;
+    private final UserHandler userHandler;
     private final CreditCardHandler creditCardHandler;
     private final TransactionHandler transactionHandler;
     private final AuthHandler authHandler;
@@ -36,7 +37,7 @@ public class JineteappController {
             @ApiResponse(responseCode = "500", description = "Unexpected error", content = @Content(schema = @Schema(implementation = String.class)))})
     public Mono<GenericResponseDto<UserDto>> getUser(
     @Parameter(name = "id", description = "User id", required = true, in = ParameterIn.PATH) @PathVariable  Integer id) {
-        return this.getUserHandler.getUserById(id);
+        return this.userHandler.getUserById(id);
     }
 
     @GetMapping(value = "/credit-card/{userId}")
@@ -89,9 +90,17 @@ public class JineteappController {
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Success"),
             @ApiResponse(responseCode = "500", description = "Unexpected error", content = @Content(schema = @Schema(implementation = String.class)))})
-    public Mono<GenericResponseDto<Boolean>> getTransactionByCreditCardId(@RequestBody LoginDto loginDto){
+    public Mono<GenericResponseDto<Boolean>> login(@RequestBody LoginDto loginDto){
         return this.authHandler.login(loginDto);
     }
-
+    @PostMapping(value = "/auth/register")
+    @Operation(summary = "Endpoint to create a user", description = "This endpoint will return a response that validates the new user")
+    @io.swagger.v3.oas.annotations.parameters.RequestBody(description = "JSON object with the information of the new user", required = true, content = @Content(schema = @Schema(implementation = UserDto.class)))
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Success"),
+            @ApiResponse(responseCode = "500", description = "Unexpected error", content = @Content(schema = @Schema(implementation = String.class)))})
+    public Mono<GenericResponseDto<UserDto>> saveUser(@RequestBody UserDto userDto){
+        return this.userHandler.saveUser(userDto);
+    }
 
 }
