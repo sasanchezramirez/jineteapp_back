@@ -85,12 +85,12 @@ public class JineteappController {
             @Parameter(name = "creditCardId", description = "Credit card id", required = true, in = ParameterIn.PATH) @PathVariable  Integer creditCardId) {
         return this.transactionHandler.getTransactionByCreditCardId(creditCardId);
     }
-    @GetMapping(value = "/auth/login")
+    @PostMapping(value = "/auth/login")
     @Operation(summary = "Endpoint to login to jineteapp", description = "This endpoint will return a confirmation for the login")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Success"),
             @ApiResponse(responseCode = "500", description = "Unexpected error", content = @Content(schema = @Schema(implementation = String.class)))})
-    public Mono<GenericResponseDto<Boolean>> login(@RequestBody LoginDto loginDto){
+    public Mono<GenericResponseDto<LoginDto>> login(@RequestBody LoginDto loginDto){
         return this.authHandler.login(loginDto);
     }
     @PostMapping(value = "/auth/register")

@@ -19,10 +19,11 @@ public class AuthHandler {
     private final JineteappRestApiMapper jineteappRestApiMapper;
     private final AuthUseCase authUseCase;
 
-    public Mono<GenericResponseDto<Boolean>> login(LoginDto loginDto){
+    public Mono<GenericResponseDto<LoginDto>> login(LoginDto loginDto){
         log.debug("Initializing login");
         Login login = this.jineteappRestApiMapper.loginDtoToLogin(loginDto);
         return this.authUseCase.execute(login)
+                .map(this.jineteappRestApiMapper::loginToLoginDto)
                 .map(GenericResponseDto::new);
     }
 }
