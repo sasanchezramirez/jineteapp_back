@@ -3,6 +3,8 @@ package co.com.jineteapp.usecase;
 import co.com.jineteapp.gateway.PersistenceGateway;
 import co.com.jineteapp.model.Login;
 import co.com.jineteapp.model.User;
+import co.com.jineteapp.model.error.InvalidCredentialsException;
+import co.com.jineteapp.model.error.UserNotFoundException;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.security.Keys;
@@ -22,14 +24,16 @@ public class AuthUseCase {
 
     public Mono<Login> execute(Login login){
         log.info("Init password validation");
+
         return this.persistenceGateway.getUserByEmail(login.getEmail())
+                .switchIfEmpty(Mono.error(new UserNotFoundException("User not found with email: " + login.getEmail())))
                 .flatMap(user -> {
-                    if(Objects.equals(user.getPassword(), login.getPassword())) {
+                    if (Objects.equals(user.getPassword(), login.getPassword())) {
                         String token = generateToken(login);
                         login.setAccessToken(token);
                         return Mono.just(login);
                     } else {
-                        return Mono.empty();
+                        return Mono.error(new InvalidCredentialsException("Invalid password"));
                     }
                 });
     }

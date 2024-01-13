@@ -87,6 +87,10 @@ public class PersistenceService implements PersistenceGateway {
     @Override
     public Mono<User> getUserByEmail(String email) {
         log.debug("Using persistence gateway to get a user by its email");
+
+        if (email == null || email.isEmpty()) {
+            return Mono.error(new IllegalArgumentException("Email cannot be null or empty"));
+        }
         return this.userRepository.findUserByEmail(email)
                 .map(this.persistenceMapper::userEntityToUser);
     }
