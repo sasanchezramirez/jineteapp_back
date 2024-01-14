@@ -2,6 +2,7 @@ package co.com.jineteapp.gateway;
 
 import co.com.jineteapp.model.CreditCard;
 import co.com.jineteapp.model.Transaction;
+import co.com.jineteapp.model.TypeOfJineteo;
 import co.com.jineteapp.model.User;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -23,7 +24,7 @@ public interface PersistenceGateway {
      * @param userId parameter used to relate a credit card with a user
      * @return Users from the database
      */
-    Mono<CreditCard> getCreditCardByUserId(Integer userId);
+    Flux<CreditCard> getCreditCardByUserId(Integer userId);
     /**
      * Saves a credit card from the database
      *
@@ -66,5 +67,10 @@ public interface PersistenceGateway {
      * @return a user
      */
     Mono<User> saveUser(User user);
-
+    /**
+     * Gets jineteo types
+     *
+     * @return a list of jineteos
+     */
+    Flux<TypeOfJineteo> getTypesOfJineteo();
 }

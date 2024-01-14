@@ -1,10 +1,7 @@
 package co.com.jineteapp.apirest.mapper;
 
 import co.com.jineteapp.apirest.dto.*;
-import co.com.jineteapp.model.CreditCard;
-import co.com.jineteapp.model.Login;
-import co.com.jineteapp.model.Transaction;
-import co.com.jineteapp.model.User;
+import co.com.jineteapp.model.*;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import reactor.core.publisher.Mono;
@@ -20,5 +17,8 @@ public interface JineteappRestApiMapper {
     Transaction saveTransactionDtoToTransaction(SaveTransactionDto saveTransactionDto);
     TransactionDto transactionToTransactionDto(Transaction transaction);
     Login loginDtoToLogin(LoginDto loginDto);
+    @Mapping(target = "password", ignore = true)
     LoginDto loginToLoginDto(Login login);
+    TypeOfJineteoDto typeOfJineteoToTypeOfJineteoDto(TypeOfJineteo typeOfJineteo);
+
 }

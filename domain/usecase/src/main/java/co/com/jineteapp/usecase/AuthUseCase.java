@@ -31,6 +31,7 @@ public class AuthUseCase {
                     if (Objects.equals(user.getPassword(), login.getPassword())) {
                         String token = generateToken(login);
                         login.setAccessToken(token);
+                        login.setId(user.getId());
                         return Mono.just(login);
                     } else {
                         return Mono.error(new InvalidCredentialsException("Invalid password"));

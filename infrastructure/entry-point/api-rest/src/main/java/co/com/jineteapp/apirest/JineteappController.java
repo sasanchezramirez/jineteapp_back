@@ -1,10 +1,7 @@
 package co.com.jineteapp.apirest;
 
 import co.com.jineteapp.apirest.dto.*;
-import co.com.jineteapp.apirest.handler.AuthHandler;
-import co.com.jineteapp.apirest.handler.CreditCardHandler;
-import co.com.jineteapp.apirest.handler.UserHandler;
-import co.com.jineteapp.apirest.handler.TransactionHandler;
+import co.com.jineteapp.apirest.handler.*;
 import co.com.jineteapp.model.User;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -29,6 +26,7 @@ public class JineteappController {
     private final CreditCardHandler creditCardHandler;
     private final TransactionHandler transactionHandler;
     private final AuthHandler authHandler;
+    private final JineteoHandler jineteoHandler;
 
     @GetMapping(value = "/user/{id}")
     @Operation(summary = "Endpoint to get a user", description = "This endpoint will return a user object")
@@ -45,9 +43,17 @@ public class JineteappController {
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Success"),
             @ApiResponse(responseCode = "500", description = "Unexpected error", content = @Content(schema = @Schema(implementation = String.class)))})
-    public Mono<GenericResponseDto<CreditCardDto>> getCreditCard(
+    public Mono<GenericResponseDto<CreditCardListDto>> getCreditCard(
             @Parameter(name = "user_id", description = "User id", required = true, in = ParameterIn.PATH) @PathVariable  Integer userId) {
         return this.creditCardHandler.getCreditCard(userId);
+    }
+    @GetMapping(value = "/jineteo-types")
+    @Operation(summary = "Endpoint to choose what kind of jineteo will be used", description = "This endpoint will return a list of jineteo types")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Success"),
+            @ApiResponse(responseCode = "500", description = "Unexpected error", content = @Content(schema = @Schema(implementation = String.class)))})
+    public Mono<GenericResponseDto<JineteoTypesDto>> getJineteoTypes(){
+        return this.jineteoHandler.getJineteoTypes();
     }
     @PostMapping(value = "/new-credit-card")
     @Operation(summary = "Endpoint to save add a new credit card", description = "This endpoint will return a response that validates the new credit card status")
