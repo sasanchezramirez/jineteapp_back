@@ -9,5 +9,6 @@ public class LoginDto {
     private String email;
     private String password;
     private String accessToken;
+    private Integer id;
 
 }

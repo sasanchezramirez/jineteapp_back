@@ -45,7 +45,7 @@ public class JineteappController {
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Success"),
             @ApiResponse(responseCode = "500", description = "Unexpected error", content = @Content(schema = @Schema(implementation = String.class)))})
-    public Mono<GenericResponseDto<CreditCardDto>> getCreditCard(
+    public Mono<GenericResponseDto<CreditCardListDto>> getCreditCard(
             @Parameter(name = "user_id", description = "User id", required = true, in = ParameterIn.PATH) @PathVariable  Integer userId) {
         return this.creditCardHandler.getCreditCard(userId);
     }

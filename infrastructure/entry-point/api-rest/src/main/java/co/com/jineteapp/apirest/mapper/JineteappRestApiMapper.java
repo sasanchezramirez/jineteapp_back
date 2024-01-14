@@ -20,5 +20,7 @@ public interface JineteappRestApiMapper {
     Transaction saveTransactionDtoToTransaction(SaveTransactionDto saveTransactionDto);
     TransactionDto transactionToTransactionDto(Transaction transaction);
     Login loginDtoToLogin(LoginDto loginDto);
+    @Mapping(target = "password", ignore = true)
+
     LoginDto loginToLoginDto(Login login);
 }

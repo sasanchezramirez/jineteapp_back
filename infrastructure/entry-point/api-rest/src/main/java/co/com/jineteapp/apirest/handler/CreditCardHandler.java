@@ -1,6 +1,7 @@
 package co.com.jineteapp.apirest.handler;
 
 import co.com.jineteapp.apirest.dto.CreditCardDto;
+import co.com.jineteapp.apirest.dto.CreditCardListDto;
 import co.com.jineteapp.apirest.dto.GenericResponseDto;
 import co.com.jineteapp.apirest.dto.SaveCreditCardDto;
 import co.com.jineteapp.apirest.mapper.JineteappRestApiMapper;
@@ -8,6 +9,7 @@ import co.com.jineteapp.model.CreditCard;
 import co.com.jineteapp.usecase.CreditCardUseCase;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
+import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.util.Logger;
 import reactor.util.Loggers;
@@ -19,10 +21,12 @@ public class CreditCardHandler {
     private final CreditCardUseCase creditCardUseCase;
     private final JineteappRestApiMapper jineteappRestApiMapper;
 
-    public Mono<GenericResponseDto<CreditCardDto>> getCreditCard(Integer id){
+    public Mono<GenericResponseDto<CreditCardListDto>> getCreditCard(Integer id){
         log.debug("Initializing getCreditCard");
         return this.creditCardUseCase.getCreditCardUseCase(id)
                 .map(this.jineteappRestApiMapper::creditCardToCreditCardDto)
+                .collectList()
+                .map(CreditCardListDto::new)
                 .map(GenericResponseDto::new);
     }
 

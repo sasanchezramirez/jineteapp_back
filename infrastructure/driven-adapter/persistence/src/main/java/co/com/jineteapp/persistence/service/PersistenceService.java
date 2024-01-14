@@ -34,7 +34,7 @@ public class PersistenceService implements PersistenceGateway {
     }
 
     @Override
-    public Mono<CreditCard> getCreditCardByUserId(Integer userId) {
+    public Flux<CreditCard> getCreditCardByUserId(Integer userId) {
         log.debug("Using persistence gateway to find a credit card related to a user_id");
         return this.creditCardRepository.findCreditCardByUserId(userId)
                 .map(this.persistenceMapper::creditCardEntityToCreditCard);

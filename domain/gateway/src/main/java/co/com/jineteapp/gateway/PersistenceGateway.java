@@ -23,7 +23,7 @@ public interface PersistenceGateway {
      * @param userId parameter used to relate a credit card with a user
      * @return Users from the database
      */
-    Mono<CreditCard> getCreditCardByUserId(Integer userId);
+    Flux<CreditCard> getCreditCardByUserId(Integer userId);
     /**
      * Saves a credit card from the database
      *
