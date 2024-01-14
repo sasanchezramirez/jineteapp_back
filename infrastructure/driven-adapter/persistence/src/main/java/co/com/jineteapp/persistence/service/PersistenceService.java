@@ -3,12 +3,14 @@ package co.com.jineteapp.persistence.service;
 import co.com.jineteapp.gateway.PersistenceGateway;
 import co.com.jineteapp.model.CreditCard;
 import co.com.jineteapp.model.Transaction;
+import co.com.jineteapp.model.TypeOfJineteo;
 import co.com.jineteapp.model.User;
 import co.com.jineteapp.persistence.entity.CreditCardEntity;
 import co.com.jineteapp.persistence.entity.TransactionEntity;
 import co.com.jineteapp.persistence.entity.UserEntity;
 import co.com.jineteapp.persistence.mapper.PersistenceMapper;
 import co.com.jineteapp.persistence.repository.CreditCardRepository;
+import co.com.jineteapp.persistence.repository.JineteoTypesRepository;
 import co.com.jineteapp.persistence.repository.TransactionRepository;
 import co.com.jineteapp.persistence.repository.UserRepository;
 import lombok.AllArgsConstructor;
@@ -26,6 +28,7 @@ public class PersistenceService implements PersistenceGateway {
     private final CreditCardRepository creditCardRepository;
     private final PersistenceMapper persistenceMapper;
     private final TransactionRepository transactionRepository;
+    private final JineteoTypesRepository jineteoTypesRepository;
     @Override
     public Mono<User> getUserById(Integer id) {
         log.debug("Using persistence gateway to find a user by its id");
@@ -102,5 +105,12 @@ public class PersistenceService implements PersistenceGateway {
         userEntity = this.persistenceMapper.userToUserEntity(user);
         return this.userRepository.save(userEntity)
                 .map(this.persistenceMapper::userEntityToUser);
+    }
+
+    @Override
+    public Flux<TypeOfJineteo> getTypesOfJineteo() {
+        log.debug("Using persistence gateway to save a user");
+        return this.jineteoTypesRepository.findAll()
+                .map(this.persistenceMapper::typeOfJineteoEntityToTypeOfJineteo);
     }
 }
