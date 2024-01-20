@@ -6,6 +6,7 @@ import co.com.jineteapp.apirest.mapper.JineteappRestApiMapper;
 import co.com.jineteapp.model.User;
 import co.com.jineteapp.usecase.UserUseCase;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Component;
 import reactor.core.publisher.Mono;
 import reactor.util.Logger;
@@ -17,6 +18,8 @@ public class UserHandler {
     private static final Logger log = Loggers.getLogger(UserHandler.class.getName());
     private final UserUseCase userUsecase;
     private final JineteappRestApiMapper jineteappRestApiMapper;
+    private final BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+
     public Mono<GenericResponseDto<UserDto>> getUserById(Integer id){
         log.debug("Initializing getUser");
         return this.userUsecase.executeGetUser(id)
@@ -27,6 +30,9 @@ public class UserHandler {
     public Mono<GenericResponseDto<UserDto>> saveUser(UserDto userDto){
         log.debug("Initializing saveUser");
         User user = this.jineteappRestApiMapper.userDtoToUser(userDto);
+        String encryptedPassword = passwordEncoder.encode(user.getPassword());
+        user.setPassword(encryptedPassword);
+
         return this.userUsecase.executeSaveUser(user)
                 .map(this.jineteappRestApiMapper::userToUserDto)
                 .map(GenericResponseDto::new);
