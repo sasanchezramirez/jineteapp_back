@@ -9,9 +9,12 @@ import co.com.jineteapp.persistence.entity.TransactionEntity;
 import co.com.jineteapp.persistence.entity.TypeOfJineteoEntity;
 import co.com.jineteapp.persistence.entity.UserEntity;
 import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
 
 @Mapper
 public interface PersistenceMapper {
+    @Mapping(target = "accessToken", ignore = true)
+
     User userEntityToUser(UserEntity userEntity);
     UserEntity userToUserEntity(User user);
     CreditCard creditCardEntityToCreditCard(CreditCardEntity creditCardEntity);
