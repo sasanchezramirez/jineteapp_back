@@ -21,4 +21,5 @@ public interface JineteappRestApiMapper {
     LoginDto loginToLoginDto(Login login);
     TypeOfJineteoDto typeOfJineteoToTypeOfJineteoDto(TypeOfJineteo typeOfJineteo);
 
+
 }
