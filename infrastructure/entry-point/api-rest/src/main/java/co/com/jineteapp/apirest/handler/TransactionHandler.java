@@ -3,6 +3,7 @@ package co.com.jineteapp.apirest.handler;
 import co.com.jineteapp.apirest.dto.GenericResponseDto;
 import co.com.jineteapp.apirest.dto.SaveTransactionDto;
 import co.com.jineteapp.apirest.dto.TransactionDto;
+import co.com.jineteapp.apirest.dto.TransactionListDto;
 import co.com.jineteapp.apirest.mapper.JineteappRestApiMapper;
 import co.com.jineteapp.model.Transaction;
 import co.com.jineteapp.usecase.TransactionUseCase;
@@ -25,10 +26,12 @@ public class TransactionHandler {
         return this.transactionUseCase.saveTransactionUseCase(transaction)
                 .map(GenericResponseDto::new);
     }
-    public Flux<GenericResponseDto<TransactionDto>> getTransactionByUserId(Integer userId){
+    public Mono<GenericResponseDto<TransactionListDto>> getTransactionByUserId(Integer userId){
         log.debug("Initializing getTransactionByUserId");
         return  this.transactionUseCase.getTransactionByUserId(userId)
                 .map(this.jineteappRestApiMapper::transactionToTransactionDto)
+                .collectList()
+                .map(TransactionListDto::new)
                 .map(GenericResponseDto::new);
     }
     public Flux<GenericResponseDto<TransactionDto>> getTransactionByCreditCardId(Integer creditCardId){
