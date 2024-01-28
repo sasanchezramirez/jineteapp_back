@@ -13,4 +13,5 @@ public class SaveTransactionDto {
     private Integer amount;
     private String date;
     private String observation;
+    private Integer losses;
 }

@@ -78,7 +78,7 @@ public class JineteappController {
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Success"),
             @ApiResponse(responseCode = "500", description = "Unexpected error", content = @Content(schema = @Schema(implementation = String.class)))})
-    public Flux<GenericResponseDto<TransactionDto>> getTransactionByUserId(
+    public Mono<GenericResponseDto<TransactionListDto>> getTransactionByUserId(
             @Parameter(name = "user_id", description = "User id", required = true, in = ParameterIn.PATH) @PathVariable  Integer userId) {
         return this.transactionHandler.getTransactionByUserId(userId);
     }

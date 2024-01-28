@@ -7,6 +7,7 @@ import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.security.Keys;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import reactor.core.publisher.Mono;
 import reactor.util.Logger;
 import reactor.util.Loggers;
@@ -18,6 +19,8 @@ import java.util.Date;
 public class UserUseCase {
     private static final Logger log = Loggers.getLogger(UserUseCase.class.getName());
     private final PersistenceGateway persistenceGateway;
+    @Value("${jwt.secret}")
+    private String secretKey;
     public Mono<User> executeGetUser(Integer id){
         log.debug("Initializing getUserUseCase");
         return this.persistenceGateway.getUserById(id);
@@ -40,12 +43,11 @@ public class UserUseCase {
         long expMillis = nowMillis + 3600000;
         Date exp = new Date(expMillis);
 
-        SecretKey secretKey = Keys.secretKeyFor(SignatureAlgorithm.HS512);
         return Jwts.builder()
                 .setSubject(user.getEmail())
                 .setIssuedAt(now)
                 .setExpiration(exp)
-                .signWith(secretKey)
+                .signWith(Keys.hmacShaKeyFor(secretKey.getBytes()))
                 .compact();
     }
 }

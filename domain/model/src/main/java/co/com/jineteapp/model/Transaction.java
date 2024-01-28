@@ -14,4 +14,6 @@ public class Transaction {
     private Integer amount;
     private String date;
     private String observation;
+    private Integer losses;
+
 }

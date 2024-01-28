@@ -1,4 +1,8 @@
 package co.com.jineteapp.apirest.config;
+
+
+import co.com.jineteapp.apirest.config.JwtTokenAuthenticationFilter;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -8,15 +12,20 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @EnableWebSecurity
 public class SecurityConfig {
 
+    @Autowired
+    private JwtTokenAuthenticationFilter jwtTokenAuthenticationFilter;
+
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
+                .cors()
+                .and()
                 .csrf().disable()
                 .authorizeRequests()
-                .antMatchers("/auth/login").permitAll()
-                .antMatchers("/credit-card/**").authenticated()
+                .antMatchers("/api/v1/credit-card/**","/api/v1/new-credit-card" ).authenticated()
+                .antMatchers("/api/v1/auth/login").permitAll()
                 .and()
-                .addFilterBefore(new JwtTokenAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
+                .addFilterBefore(jwtTokenAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
 
         return http.build();
     }

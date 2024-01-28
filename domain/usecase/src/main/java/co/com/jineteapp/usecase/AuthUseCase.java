@@ -9,6 +9,7 @@ import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.security.Keys;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import reactor.core.publisher.Mono;
 import reactor.util.Logger;
@@ -23,6 +24,8 @@ public class AuthUseCase {
     private static final Logger log = Loggers.getLogger(AuthUseCase.class.getName());
     private final PersistenceGateway persistenceGateway;
     private final BCryptPasswordEncoder passwordEncoder;
+    @Value("${jwt.secret}")
+    private String secretKey;
 
 
     public Mono<Login> execute(Login login){
@@ -48,15 +51,14 @@ public class AuthUseCase {
     public String generateToken(Login login) {
         long nowMillis = System.currentTimeMillis();
         Date now = new Date(nowMillis);
-        long expMillis = nowMillis + 3600000;
+        long expMillis = nowMillis + 3600000; // 1 hora de expiración
         Date exp = new Date(expMillis);
 
-        SecretKey secretKey = Keys.secretKeyFor(SignatureAlgorithm.HS512);
         return Jwts.builder()
                 .setSubject(login.getEmail())
                 .setIssuedAt(now)
                 .setExpiration(exp)
-                .signWith(secretKey)
+                .signWith(Keys.hmacShaKeyFor(secretKey.getBytes()))
                 .compact();
     }
 }
