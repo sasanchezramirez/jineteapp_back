@@ -13,9 +13,16 @@ public class TransactionUseCase {
     private static final Logger log = Loggers.getLogger(TransactionUseCase.class.getName());
     private final PersistenceGateway persistenceGateway;
 
-    public Mono<Boolean> saveTransactionUseCase(Transaction transaction){
+    public Mono<Boolean> saveTransactionUseCase(Transaction transaction) {
         log.debug("Initializing saveTransactionUseCase");
-        return this.persistenceGateway.saveTransaction(transaction);
+        if (transaction.getTypeOfTransactionId() == 1) {
+            return this.persistenceGateway.saveTransaction(transaction);
+        } else if (transaction.getTypeOfTransactionId() == 2) {
+            return this.updateCreditCardBalance(transaction)
+                    .then(this.persistenceGateway.saveTransaction(transaction));
+        } else {
+            return Mono.error(new IllegalArgumentException("Invalid transactionTypeId"));
+        }
     }
 
     public Flux<Transaction> getTransactionByUserId(Integer userId){
@@ -27,4 +34,20 @@ public class TransactionUseCase {
         log.debug("Initializing getTransactionCreditCardId");
         return this.persistenceGateway.getTransactionByCreditCardId(creditCardId);
     }
+
+    public Mono<Void> updateCreditCardBalance(Transaction transaction) {
+        log.debug("It's a payment... Updating credit card balance");
+        Integer userId = transaction.getUserId();
+
+        return this.persistenceGateway.getCreditCardByUserId(userId)
+                .flatMap(creditCard -> {
+                    log.debug("Credit card founded with balance: ", creditCard.getBalance());
+                    Integer newBalance = creditCard.getBalance() - transaction.getAmount();
+                    log.debug("New balance: ", newBalance);
+                    creditCard.setBalance(newBalance);
+                    return this.persistenceGateway.saveCreditCard(creditCard);
+                })
+                .then();
+    }
+
 }
