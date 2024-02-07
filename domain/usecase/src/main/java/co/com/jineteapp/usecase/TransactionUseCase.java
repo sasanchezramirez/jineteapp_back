@@ -16,9 +16,10 @@ public class TransactionUseCase {
     public Mono<Boolean> saveTransactionUseCase(Transaction transaction) {
         log.debug("Initializing saveTransactionUseCase");
         if (transaction.getTypeOfTransactionId() == 1) {
-            return this.persistenceGateway.saveTransaction(transaction);
+            return this.updateCreditCardBalanceWhenLosses(transaction)
+                    .then(this.persistenceGateway.saveTransaction(transaction));
         } else if (transaction.getTypeOfTransactionId() == 2) {
-            return this.updateCreditCardBalance(transaction)
+            return this.updateCreditCardBalanceWhenPayment(transaction)
                     .then(this.persistenceGateway.saveTransaction(transaction));
         } else {
             return Mono.error(new IllegalArgumentException("Invalid transactionTypeId"));
@@ -35,7 +36,7 @@ public class TransactionUseCase {
         return this.persistenceGateway.getTransactionByCreditCardId(creditCardId);
     }
 
-    public Mono<Void> updateCreditCardBalance(Transaction transaction) {
+    public Mono<Void> updateCreditCardBalanceWhenPayment(Transaction transaction) {
         log.debug("It's a payment... Updating credit card balance");
         Integer userId = transaction.getUserId();
 
@@ -43,6 +44,20 @@ public class TransactionUseCase {
                 .flatMap(creditCard -> {
                     log.debug("Credit card founded with balance: ", creditCard.getBalance());
                     Integer newBalance = creditCard.getBalance() - transaction.getAmount();
+                    log.debug("New balance: ", newBalance);
+                    creditCard.setBalance(newBalance);
+                    return this.persistenceGateway.saveCreditCard(creditCard);
+                })
+                .then();
+    }
+
+    public Mono<Void> updateCreditCardBalanceWhenLosses(Transaction transaction) {
+        log.debug("There are losses... Updating credit card balance");
+        Integer userId = transaction.getUserId();
+
+        return this.persistenceGateway.getCreditCardByUserId(userId)
+                .flatMap(creditCard -> {
+                    Integer newBalance = creditCard.getBalance() + transaction.getLosses();
                     log.debug("New balance: ", newBalance);
                     creditCard.setBalance(newBalance);
                     return this.persistenceGateway.saveCreditCard(creditCard);
