@@ -1,1 +1,1 @@
-Backend for jinteapp. It is based on a hexagonal architechture. 
+Backend for jineteapp. It is based on a hexagonal architecture.
