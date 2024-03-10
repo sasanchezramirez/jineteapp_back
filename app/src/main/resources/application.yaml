@@ -4,7 +4,7 @@ spring:
 
 
   r2dbc:
-    url: r2dbc:postgresql://db:5432/jineteapp
+    url: r2dbc:postgresql://host.docker.internal:5432/jineteapp
     username: santiago
     password: 0406
   data:
